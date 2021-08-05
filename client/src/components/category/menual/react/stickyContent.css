@@ -1,0 +1,38 @@
+.bd-main {
+  grid-template-areas:
+  "intro toc"
+  "content toc";
+  grid-template-columns: 4fr 1fr;
+  grid-template-rows: auto 1fr;
+  display: grid;
+  gap: inherit;
+}
+.bd-toc {
+  position: sticky;
+  top: 1rem;
+  z-index: 2;
+  right: 0;
+  grid-area: toc; 
+  height: calc(100vh - 15rem);
+  overflow-y: auto;
+}
+.bd-content {
+  grid-area: content;
+}
+.bd-toc nav li {
+  margin-bottom: .25rem;
+}
+.bd-toc nav ul {
+  padding-left: 0;
+  list-style: none;
+}
+.bd-toc nav a {
+  color: inherit;
+}
+.bd-toc nav ul ul {
+  padding-left: 1rem;
+  margin-top: .25rem;
+}
+.empty-area {
+  height: 500px;
+}
