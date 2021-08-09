@@ -141,13 +141,13 @@ class MainContents extends Component {
                 <div style={{padding: '10px'}}>
                 {/* <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.goDetail(data)}>Detail</button> */}
                 <button type="button" className="btn btn-outline-secondary btn-sm btn-br mr-10">
-                  <Link to={{pathname:`/posts/detail`, search: `?id=${data.id}&groupType=${data.group_type}`}} className="btn-text-s">Detail</Link>
+                  <Link to={{pathname:`/posts/detail`, search: `?id=${data.id}&groupType=${data.group_type}`}} className="btn-text-s">read more</Link>
                 </button>
-                <button type="button" className="btn btn-outline-secondary btn-sm btn-br">
+                {/* <button type="button" className="btn btn-outline-secondary btn-sm btn-br">
                 <NavLink to={`/posts?groupType=${data.group_type}`} className="btn-text-s">
                     List
                   </NavLink>
-                </button>
+                </button> */}
 
                 </div>
               </Card>

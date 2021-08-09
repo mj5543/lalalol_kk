@@ -60,11 +60,11 @@ class PostList extends Component {
     let btnEl = ''
     if (this.props.groupType !== 'GEUST' && this.props.userInfo.grade === 'MASTER') {
       btnEl =  <button type="button" className="btn btn-dark btn-sm btn-fr">
-              <Link to={`${this.props.pathInfo.url}?groupType=${this.state.groupType}#write`} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link>
+              <Link to={`${this.props.pathInfo.url}?groupType=${this.props.groupType}#write`} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link>
               </button>
     } else if (this.props.groupType === 'GEUST') {
       btnEl =  <button type="button" className="btn btn-dark btn-sm btn-fr">
-              <Link to={`${this.props.pathInfo.url}?groupType=${this.state.groupType}#write`} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link>
+              <Link to={`${this.props.pathInfo.url}?groupType=${this.props.groupType}#write`} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link>
               </button>
     }
     this.setState({

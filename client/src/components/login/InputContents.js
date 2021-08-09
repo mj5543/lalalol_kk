@@ -1,4 +1,4 @@
-import React, {useReducer, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import GoogleLoginBtn from './GoogleLoginBtn';
 import {isEmpty} from 'lodash';
@@ -11,7 +11,14 @@ import { connect } from 'react-redux';
 
 const InputContents = (props) => {
   console.log('props', props);
+	const [inputs, setInputs] = useState({
+		email: '',
+		password: ''
+	});
+	const { email, password } = inputs;
+
 	const currentState = props.store.getState();
+	
 	console.log(props.store.getState())
 	if (!currentState.users.logged && !isEmpty(storage.get('loggedInfo'))) {
 		props.setUserInfo(storage.get('loggedInfo'));
@@ -50,7 +57,68 @@ const InputContents = (props) => {
       props.history.push("/");
 		}
 	}
+	const userEmailPassCheck = async() => {
+		try {
+			const res = await axios.post('/api/userEmailPassCheck', {password: inputs.password, email: inputs.email});
+			console.log('res--', res);
+			if(!isEmpty(res.data.result)) {
+				storage.set('loggedInfo', res.data.result[0]);
+				props.setUserInfo(res.data.result[0]);
+				props.history.push("/");
+			}
+		} catch(e) {
+			console.log('error--', e);
 
+		}
+
+	}
+	const onInputChange = (e) => {
+		const { value, name } = e.target;
+		setInputs({
+				...inputs, //기존 input 객체를 복사 - 나머지 패턴
+				[name]: value
+		});
+		// let emailMessage = '';
+		// let passwordMessage = '';
+		// let nameMessage = '';
+		// let nameInvalid = false;
+		// let emailInvalid = false;
+		// let passwordInvalid = false;
+		// if(name === 'name') {
+		// 	if(isEmpty(value)) {
+		// 		nameMessage = '이름을 입력하세요.'
+		// 		nameInvalid = true
+		// 	}
+		// 	setValidations({
+		// 		...validations,
+		// 		nameMessage: nameMessage,
+		// 		nameInvalid: nameInvalid,
+		// 	});
+		// }
+		// if(name === 'password') {
+		// 	if(!isLength(value, { min: 6 })) {
+		// 		passwordMessage = '비밀번호를 6자 이상 입력하세요.';
+		// 		passwordInvalid = true
+		// 	}
+		// 	setValidations({
+		// 		...validations,
+		// 		passwordMessage: passwordMessage,
+		// 		passwordInvalid: passwordInvalid,
+		// 	});
+
+		// }
+		// if(name === 'email') {
+		// 	if(!isEmail(value)) {
+		// 		emailMessage = '잘못된 이메일 형식 입니다.';
+		// 		emailInvalid = true
+		// 	}
+		// 	setValidations({
+		// 		...validations,
+		// 		emailMessage: emailMessage,
+		// 		emailInvalid: emailInvalid,
+		// 	});
+		// }
+}
 	const handleChange = (e) => {
 		// const { AuthActions } = this.props;
 		const { name, value } = e.target;
@@ -87,11 +155,19 @@ const InputContents = (props) => {
 										<div className="mb-3">
 										{/* <InputWithLabel label="이메일" name="email" value={email} onChange={handleChange} placeholder="이메일"/> */}
 											<label className="form-label">Email</label>
-											<input className="form-control form-control-lg" type="email" name="email" placeholder="Enter your email" />
+											<input className="form-control form-control-lg" type="email" name="email"
+											value={email}
+											placeholder="Enter your email"
+											onChange={onInputChange}
+											/>
 										</div>
 										<div className="mb-3">
 											<label className="form-label">Password</label>
-											<input className="form-control form-control-lg" type="password" name="password" placeholder="Enter your password" />
+											<input className="form-control form-control-lg" type="password" name="password"
+											value={password}
+											placeholder="Enter your password"
+											onChange={onInputChange}
+											/>
 											{/* <small>
 												<a href="index.html">Forgot password?</a>
 											</small> */}
@@ -105,7 +181,7 @@ const InputContents = (props) => {
 											</label>
 										</div> */}
 										<div className="text-center mt-3">
-											<button type="button" className="btn btn-lg btn-primary">Sign in</button>
+											<button type="button" className="btn btn-lg btn-primary" onClick={userEmailPassCheck}>Sign in</button>
 											<GoogleLoginBtn onGoogleLogin={provideUserCheck} history={props.history} location={props.location} />
 										</div>
 									</form>

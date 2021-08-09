@@ -21,6 +21,20 @@ router.post('/api/userCheck', function(request, response) {
     }
   });
 });
+router.post('/api/userEmailPassCheck', function(request, response) {
+  console.log('request.body', request.body);
+  console.log('rresponse', response);
+  const userpassword = request.body.password;
+  const email = request.body.email;
+  connection.query('SELECT * FROM users WHERE password = ? AND email = ?', [userpassword, email], function(error, results, fields) {
+    if (error) {
+      response.status(500);
+      response.render('error', { error: err });
+    } else {
+      response.send({ result : results });
+    }
+  });
+});
 router.post('/api/updateLoggedinUser', function(request, response) {
   // const {name, password, email, appId, provider} = request.body;
   const email = request.body.email;
