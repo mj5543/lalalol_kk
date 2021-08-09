@@ -48,7 +48,8 @@ export class BaseContainer extends Component {
 //*******connect 한 컴포넌트에서 props 로 내려 받을 수 있다.
 const mapStateToProps = state => ({
   logged: state.users.logged,
-  userInfo: state.users.userInfo
+  userInfo: state.users.userInfo,
+  ipInfo: state.users.ipInfo
 });
 
 const mapDispatchToProps = dispatch => {

@@ -55,7 +55,7 @@ router.post('/api/posts/regist', function(request, response) {
   // });
   let now = new Date();
   // let sql = 'INSERT INTO posts (name, email, password, subject, content, ip, created_at) VALUES (?, ?, ?, ?, ?, inet_aton(?), ?)';
-  let sql = 'INSERT INTO posts (name, email, password, subject, content, created_at) VALUES (?, ?, ?, ?, ?, ?)';
+  let sql = 'INSERT INTO posts (name, email, password, subject, content, created_at, group_type) VALUES (?, ?, ?, ?, ?, ?, ?)';
   const content = `${data.content}`;
   const bindParam = [
     data.name, 
@@ -63,7 +63,8 @@ router.post('/api/posts/regist', function(request, response) {
     data.password,
     data.subject,
     content,
-    now
+    now,
+    data.groupType
   ];
   // const content = `<p style="text-align:start;"><span style="color: rgb(81,81,81);background-color: rgb(255,255,255);font-size: 16px;font-family: Noto Sans KR", "PT Serif", Georgia, "Times New Roman", serif;">axios에서 
   // 추가 데이터를 보내는 방법에는 data와 params가 있다. data는 post요청을 보낼 때 사용되는 객체이며, params는 위의 예시처럼 url에 포함되는 데이터를 넣어주는 것이다.</span> <span style="color: rgb(81,81,81);background-color: rgb(255,255,255);font-size: 16px;font-family: Noto Sans KR", "PT Serif", Georgia, "Times New Roman", serif;"><strong>주의해야 할 점은, 서버에서는 req.params를 사용하면 예상된 변수(?)값을 받아오는 의미이지만, axios에 
@@ -72,8 +73,9 @@ router.post('/api/posts/regist', function(request, response) {
   // const bindParam = ['운영자', 'test@mail', '1111', 'test insert', content, '2021-07-21T07:01:43']
   connection.query(sql, bindParam, (err, results, fields) => {
     if (err) {
-      console.error('Error code : ' + err.code);
-      console.error('Error Message : ' + err.message);
+      res.status(500);
+      res.render('error', { error: err });
+      res.send({ error : err });
       throw new Error(err); 
     } else { 
       response.send(JSON.parse(JSON.stringify(results))); 
@@ -153,8 +155,9 @@ router.post('/api/posts/update', upload.single('file'), function(request, respon
   // const bindParam = ['운영자', 'test@mail', '1111', 'test insert', content, '2021-07-21T07:01:43']
   connection.query(sql, bindParam, (err, results, fields) => {
     if (err) {
-      console.error('Error code : ' + err.code);
-      console.error('Error Message : ' + err.message);
+      response.status(500);
+      response.render('error', { error: err });
+      response.send({ error : err });
       throw new Error(err); 
     } else { 
       console.log('results--', results)
@@ -167,8 +170,57 @@ router.get('/api/posts/list', function(request, response) {
   let sql = 'SELECT * FROM posts ORDER BY id DESC';
   connection.query(sql, (err, data, fields) => {
     if (err) { 
-      console.error('Error code : ' + err.code);
-      console.error('Error Message : ' + err.message);
+      res.status(500);
+      res.render('error', { error: err });
+      res.send({ error : err });
+      throw new Error(err);
+    } else {
+      response.send({ result : data });
+      // response.send(JSON.parse(JSON.stringify(results))); 
+    } 
+  });
+
+});
+router.get('/api/posts/list-members-preview', function(request, response) {
+  // let sql = 'SELECT * FROM posts ORDER BY id DESC LIMIT 10';
+  let sql = 'SELECT * FROM posts ORDER BY id DESC LIMIT 12';
+  connection.query(sql, (err, data, fields) => {
+    if (err) { 
+      res.status(500);
+      res.render('error', { error: err });
+      res.send({ error : err });
+      throw new Error(err);
+    } else {
+      response.send({ result : data });
+      // response.send(JSON.parse(JSON.stringify(results))); 
+    } 
+  });
+
+});
+router.get('/api/posts/list-preview', function(request, response) {
+  // let sql = 'SELECT * FROM posts ORDER BY id DESC LIMIT 10';
+  let sql = 'SELECT * FROM posts WHERE group_type NOT IN (?) ORDER BY id DESC LIMIT 12';
+  connection.query(sql, ['MASTER'], (err, data, fields) => {
+    if (err) { 
+      response.status(500);
+      response.render('error', { error: err });
+      response.send({ error : err });
+      throw new Error(err);
+    } else {
+      response.send({ result : data });
+      // response.send(JSON.parse(JSON.stringify(results))); 
+    } 
+  });
+
+});
+router.get('/api/posts/activities', function(request, response) {
+  // let sql = 'SELECT * FROM posts ORDER BY id DESC LIMIT 10';
+  let sql = 'SELECT name,pp.email,pp.subject,pp.created_at,(select app_image_url from users as u where u.email = pp.email COLLATE utf8mb4_0900_ai_ci) as user_image from posts as pp ORDER BY id DESC  LIMIT 12';
+  connection.query(sql, (err, data, fields) => {
+    if (err) { 
+      response.status(500);
+      response.render('error', { error: err });
+      response.send({ error : err });
       throw new Error(err);
     } else {
       response.send({ result : data });
@@ -214,6 +266,39 @@ router.get('/api/posts/detail', (req, res) => {
   connection.query("SELECT * FROM posts WHERE id = ?", [req.query.id], (err, data) => {
 
     if (err) {
+      res.status(500);
+      res.render('error', { error: err });
+      res.send({ error : err });
+    } else {
+      res.send({ result : data });
+    }
+ 
+  })
+})
+router.delete('/api/posts/delete', (req, res) => {
+  console.log('params', req.params);
+  console.log('query', req.query);
+  connection.query("DELETE FROM posts WHERE id = ?", [req.query.id], (err, data) => {
+
+    if (err) {
+      res.status(500);
+      res.render('error', { error: err });
+      res.send({ error : err });
+    } else {
+      res.send({ result : data });
+    }
+ 
+  })
+})
+router.get('/api/posts/category-list', (req, res) => {
+  console.log('params', req.params);
+  console.log('query', req.query);
+  connection.query("SELECT * FROM posts WHERE group_type = ? ORDER BY id DESC", [req.query.groupType], (err, data) => {
+    console.log('data-', data);
+
+    if (err) {
+      res.status(500);
+      res.render('error', { error: err });
       res.send({ error : err });
     } else {
       res.send({ result : data });

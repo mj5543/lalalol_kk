@@ -5,14 +5,27 @@ import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw, convertFromHTML, ContentState, AtomicBlockUtils } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import PrismCode from '../code/PrismCode';
+import "prismjs/themes/prism-tomorrow.css";
+import PrismDecorator from "draft-js-prism";
+// const PrismDecorator = require('draft-js-prism');
+
+const Prism = require('prismjs')
 // import {isEmpty} from 'lodash';
 
 class DraftEditor extends Component {
   constructor(props) {
     console.log('BoardDetail props--', props);
+    const decorator = new PrismDecorator({
+      // Provide your own instance of PrismJS
+      prism: Prism,
+      defaultSyntax: "javascript",
+    });
+    const editorState = EditorState.createEmpty(decorator)
     super(props);
     this.state  = {
-      editorState: EditorState.createEmpty(),
+      // editorState: EditorState.createEmpty(),
+      editorState: editorState,
       content: '',
       editContent: '',
       tempFileType: ''
@@ -39,8 +52,8 @@ class DraftEditor extends Component {
         blocksFromHTML.contentBlocks,
         blocksFromHTML.entityMap,
       );
-      this.setState({
-        editorState: EditorState.createWithContent(state)
+        this.setState({
+        editorState: EditorState.createWithContent(state, this.decorator)
       })
     }
   }
@@ -88,6 +101,12 @@ class DraftEditor extends Component {
     const htmlContent = draftToHtml(convertToRaw(currentState.getCurrentContent()));
     console.log('htmlContent', htmlContent)
     this.handleChange(htmlContent);
+    const decorator = new PrismDecorator({
+      // Provide your own instance of PrismJS
+      prism: Prism,
+      defaultSyntax: "javascript",
+    });
+    EditorState.set(currentState, {decorator});
     // this.props.changedContent = draftToHtml(convertToRaw(currentState.getCurrentContent()));
 
   };
@@ -122,6 +141,19 @@ class DraftEditor extends Component {
         });
       }
     );
+  }
+  myBlockRenderer(contentBlock) {
+    const type = contentBlock.getType();
+    console.log('myBlockRenderer-', type)
+    if (type === 'code') {
+      return {
+        component: MediaComponent,
+        editable: true,
+        props: {
+          foo: 'bar',
+        },
+      };
+    }
   }
   render(){
     return (
@@ -160,8 +192,26 @@ class DraftEditor extends Component {
         editorState={this.state.editorState}
         // 에디터의 값이 변경될 때마다 onEditorStateChange 호출
         onEditorStateChange={this.onEditorStateChange}
+        // blockRendererFn={this.myBlockRenderer}
       />      
       </div>
+    )
+  }
+}
+class MediaComponent extends Component {
+  render() {
+    console.log('MediaComponent', this.props)
+    const {block, contentState} = this.props;
+    const enKey = contentState.getLastCreatedEntityKey()
+    // console.log('block.getEntityAt(0)', block.getEntityAt(0))
+    console.log('block', block)
+    // const data = contentState.getEntity(enKey).getData();
+    // console.log('data', data)
+    // const {foo} = this.props.blockProps;
+    // const data = contentState.getEntity(block.getEntityAt(0)).getData();
+    // Return a <figure> or some other content using this data.
+    return (
+      <PrismCode code={block.text} language="javascript" />
     )
   }
 }

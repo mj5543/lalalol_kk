@@ -5,7 +5,7 @@ import InputContents from "../login/InputContents";
 import * as authActions from "../../redux/modules/auth";
 import * as userActions from "../../redux/modules/users";
 import { withRouter } from "react-router-dom";
-import storage from "../../storage";
+import storage from "../lib/storage";
 import {isEmpty} from 'lodash';
 import App from "../../App";
 

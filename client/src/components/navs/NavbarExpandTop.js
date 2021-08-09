@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import * as authActions from "../../redux/modules/auth";
 import * as userActions from "../../redux/modules/users";
 import { withRouter } from "react-router-dom";
-import storage from "../../storage";
+import storage from "../lib/storage";
 import {isEmpty} from 'lodash';
 
 const NavbarExpandTop = (props) => {
@@ -22,15 +22,19 @@ const NavbarExpandTop = (props) => {
   const goSignUp = () => {
     props.history.push('/auth/sign-up');
   }
+  const doLogout = () => {
+    props.logout()
+    props.history.push('/');
+  }
   if(!props.logged) {
     signupEl = <div>
         <div className="dropdown-divider"></div><a className="dropdown-item" onClick={goSignUp}>Sign up</a>
       </div>
-    LogButtonText = 'Log in';
+    LogButtonText = 'Sign in';
     buttonEl = <a className="dropdown-item" onClick={goLogin}>{LogButtonText}</a>
   } else {
-    LogButtonText = 'Log out';
-    buttonEl = <a className="dropdown-item" onClick={props.logout}>{LogButtonText}</a>
+    LogButtonText = 'LOGOUT';
+    buttonEl = <a className="dropdown-item" onClick={doLogout}>{LogButtonText}</a>
   }
   const setUserIcon = () => {
     let userIcon = '';

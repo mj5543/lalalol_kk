@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import SimpleBar from "simplebar";
-
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 class Sidebar extends Component {
   constructor(props) {
     super(props);
@@ -58,17 +60,21 @@ class Sidebar extends Component {
     return (
       <nav id="sidebar" className="sidebar js-sidebar">
 			<div className="sidebar-content js-simplebar">
-				<a className="sidebar-brand" href="index.html">
+      <NavLink exact to="/" className="sidebar-brand">
+        <span className="align-middle">minju's blog</span>
+      </NavLink>
+				{/* <a className="sidebar-brand" href="index.html">
           <span className="align-middle">#</span>
-        </a>
+        </a> */}
 
 				<ul className="sidebar-nav">
 					<li className="sidebar-header">
-						Pages
+						About
 					</li>
           {/* <li className="sidebar-item">
 						<a data-bs-target="#pages" data-bs-toggle="collapse" className="sidebar-link" aria-expanded="true">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-layout align-middle"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> <span className="align-middle">Pages</span>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-layout align-middle"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+               <span className="align-middle">Pages</span>
 						</a>
 						<ul id="pages" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
 							<li className="sidebar-item"><a className="sidebar-link" href="pages-settings.html">Settings</a></li>
@@ -80,12 +86,11 @@ class Sidebar extends Component {
 						</ul>
 					</li> */}
 
-					<li className="sidebar-item active">
-            <NavLink exact to="/profile" className="sidebar-link"> <i className="align-middle" data-feather="user"></i> <span className="align-middle">Profile</span></NavLink>
-						{/* <a className="sidebar-link" href="pages-profile.html">
-              <i className="align-middle" data-feather="user"></i> <span className="align-middle">Profile</span>
-            </a> */}
+          <NavLink exact to="/profile" className="sidebar-item" activeClassName="active"> 
+					<li className="sidebar-link">
+            <span className="align-middle">Profile</span>
 					</li>
+          </NavLink>
 
 					{/* <li className="sidebar-item">
             <NavLink exact to="/auth/login" className="sidebar-link"> <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Sign In</span></NavLink>
@@ -95,32 +100,91 @@ class Sidebar extends Component {
             <NavLink exact to="/sign-up" className="sidebar-link"> <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Sign Up</span></NavLink>
 					</li> */}
 
-					<li className="sidebar-item">
-						<a className="sidebar-link" href="pages-blank.html">
-              <i className="align-middle" data-feather="book"></i> <span className="align-middle">Blank</span>
-            </a>
-					</li>
-					<li className="sidebar-item">
-            <NavLink exact to="/posts" className="sidebar-link"> <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Posts</span></NavLink>
-					</li>
+            <NavLink exact to="/resume"  className="sidebar-item" activeClassName="active"> 
+              <li className="sidebar-link">
+                <span className="align-middle">Resume</span>
+              </li>
+            </NavLink>
 
 					<li className="sidebar-header">
-						React
+            Posts
 					</li>
+          <li className="sidebar-item">
+						<a data-bs-target="#posts" data-bs-toggle="collapse" className="sidebar-link collapsed" aria-expanded="false">
+               <span className="align-middle">React </span>
+						</a>
+						<ul id="posts" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+            <NavLink exact to="/react/intro"  className="sidebar-item" activeClassName="active"> 
+              <li className="sidebar-link">
+                <span className="align-middle">Start</span>
+              </li>
+              </NavLink>
 
-					<li className="sidebar-item">
-            <NavLink exact to="/react/intro" className="sidebar-link"> <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Start</span></NavLink>
-					</li>
+              <NavLink exact to="/react/lifecycle" className="sidebar-item" activeClassName="active">
+              <li className="sidebar-link">
+                <span className="align-middle">LifeCyle</span>
+              </li>
+              </NavLink>
+              <NavLink exact to="/react/event" className="sidebar-item" activeClassName="active">
+              <li className="sidebar-link">
+                  <span className="align-middle">Event</span>
+              </li>
+              </NavLink>
+              <NavLink to="/posts?groupType=REACT_LIB"
+              className="sidebar-item"
+              isActive={(match, location) => {
+                console.log('match, location', match, location)
+                if(location.search === '?groupType=REACT_LIB') {
+                  return true;
+                } else {
+                  return false;
+                }
+              }}
+    
+              >
+                <li className="sidebar-link">
+                    <span className="align-middle">Library</span>
+                </li>
+              </NavLink>
 
-					<li className="sidebar-item">
-            <NavLink exact to="/react/lifecycle" className="sidebar-link"> <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">LifeCyle</span></NavLink>
-						{/* <a className="sidebar-link" href="maps-google.html">
-              <i className="align-middle" data-feather="map"></i> <span className="align-middle">LifeCyle</span>
-            </a> */}
+							{/* <li className="sidebar-item"><a className="sidebar-link" href="pages-settings.html">Settings</a></li>
+							<li className="sidebar-item"><a className="sidebar-link" href="pages-projects.html">Projects <span className="sidebar-badge badge bg-primary">Pro</span></a></li>
+							<li className="sidebar-item"><a className="sidebar-link" href="pages-clients.html">Clients <span className="sidebar-badge badge bg-primary">Pro</span></a></li>
+							<li className="sidebar-item"><a className="sidebar-link" href="pages-pricing.html">Pricing <span className="sidebar-badge badge bg-primary">Pro</span></a></li>
+							<li className="sidebar-item"><a className="sidebar-link" href="pages-chat.html">Chat <span className="sidebar-badge badge bg-primary">Pro</span></a></li>
+							<li className="sidebar-item"><a className="sidebar-link" href="pages-blank.html">Blank Page</a></li> */}
+						</ul>
 					</li>
-					<li className="sidebar-item">
-            <NavLink exact to="/react/event" className="sidebar-link"> <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Event</span></NavLink>
-					</li>
+          <NavLink to='/posts?groupType=MASTER'
+            isActive={(match, location) => {
+              console.log('match, location', match, location)
+              if(location.search === '?groupType=MASTER') {
+                return true;
+              } else {
+                return false;
+              }
+            }}
+            className="sidebar-item" activeClassName="active">
+              <li className="sidebar-link">
+                   <span className="align-middle">My post</span>
+              </li>
+            </NavLink>
+            <NavLink to='/posts?groupType=GEUST'
+            isActive={(match, location) => {
+              console.log('match, location', match, location)
+              if(location.search === '?groupType=GEUST') {
+                return true;
+              } else {
+                return false;
+              }
+            }}
+            className="sidebar-item" activeClassName="active">
+              <li className="sidebar-link">
+                   <span className="align-middle">Geust post</span>
+              </li>
+            </NavLink>
+
+
 				</ul>
 
 				<div className="sidebar-cta">

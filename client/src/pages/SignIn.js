@@ -6,7 +6,7 @@ import InputWithLabel from '../components/auth/InputWithLabel';
 import * as authActions from '../redux/modules/auth';
 import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
-import storage from '../storage';
+import storage from '../components/lib/storage';
 
 const SignIn = ({location, history}) => {
   console.log('history', history);

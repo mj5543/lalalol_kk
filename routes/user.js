@@ -12,7 +12,7 @@ router.post('/api/userCheck', function(request, response) {
   console.log('rresponse', response);
   const username = request.body.name;
   const email = request.body.email;
-  connection.query('SELECT * FROM user WHERE username = ? AND email = ?', [username, email], function(error, results, fields) {
+  connection.query('SELECT * FROM users WHERE username = ? AND email = ?', [username, email], function(error, results, fields) {
     if (error) {
       response.status(500);
       response.render('error', { error: err });
@@ -27,7 +27,7 @@ router.post('/api/updateLoggedinUser', function(request, response) {
   const imageUrl = request.body.imageUrl;
   const ip = request.body.ip;
   const params = [imageUrl, ip, email];
-  connection.query('UPDATE user SET app_image_url = ?, update_ip = ? WHERE email = ?', params,
+  connection.query('UPDATE users SET app_image_url = ?, update_ip = ? WHERE email = ?', params,
    (err, results) => {
     if (err) {
       console.error('Error code : ' + err.code);
@@ -43,7 +43,7 @@ router.post('/api/updateLoggedinUser', function(request, response) {
 router.post('/api/userEmailCheck', function(request, response) {
   console.log('request.body', request.body);
   const email = request.body.email;
-  connection.query('SELECT * FROM user WHERE email = ?', [email], function(error, results, fields) {
+  connection.query('SELECT * FROM users WHERE email = ?', [email], function(error, results, fields) {
     console.log('error, results', error, results);
     if (error) {
       response.status(500);
@@ -59,7 +59,7 @@ router.post('/api/login', function(request, response) {
   const username = request.body.username;
   const password = request.body.password;
   if (username && password) {
-      connection.query('SELECT * FROM user WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+      connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
           if (error) throw error;
           if (results.length > 0) {
               request.session.loggedin = true;
@@ -90,7 +90,7 @@ router.post('/api/signup', function(request, response) {
   const ip = request.body.ip;
   const params = [name, password, email, appId, provider, ip, ip];
   console.log('/api/signup--', name, password, email, appId, provider);
-  connection.query('INSERT INTO user (username, password, email, app_id, provided_app, create_ip) VALUES (?,?,?,?,?,?)', params,
+  connection.query('INSERT INTO users (username, password, email, app_id, provided_app, create_ip) VALUES (?,?,?,?,?,?)', params,
    (err, results) => {
     if (err) {
       console.error('Error code : ' + err.code);
@@ -110,7 +110,7 @@ router.post('/register', function(request, response) {
   const email = request.body.email;
   console.log(username, password, email);
   if (username && password && email) {
-      connection.query('SELECT * FROM user WHERE username = ? AND password = ? AND email = ?', [username, password, email], function(error, results, fields) {
+      connection.query('SELECT * FROM users WHERE username = ? AND password = ? AND email = ?', [username, password, email], function(error, results, fields) {
           if (error) throw error;
           if (results.length <= 0 && password==password2) {
               connection.query('INSERT INTO user (username, password, email) VALUES(?,?,?)', [username, password, email],
@@ -135,7 +135,7 @@ router.post('/register', function(request, response) {
   }
 });
 router.get('/api/users', (req, res) => {
-  connection.query("SELECT * FROM user", (err, data) => {
+  connection.query("SELECT * FROM users", (err, data) => {
 
     if (err) {
       res.send({ error : err });

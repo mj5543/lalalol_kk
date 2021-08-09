@@ -26,6 +26,7 @@ class PostDetail extends Component {
       id: '',
       modalShow: false,
       updateBtnEl: '',
+      deleteBtnEl: '',
     };
     // this.childRef = useRef();
     // this.callChildFunc = useCallback(() => {
@@ -35,20 +36,31 @@ class PostDetail extends Component {
     this.modeChange = this.modeChange.bind(this);
     this.actionModeChange = this.actionModeChange.bind(this);
     this.changedContent = this.changedContent.bind(this);
+    this.deletePost = this.deletePost.bind(this);
     // this.titleChanged = this.titleChanged.bind(this);
   }
   componentDidMount() {
     const {location, history} = this.props;
     //TODO
     const query = queryString.parse(location.search);
+    console.log('query---', query);
     // if(!state){
     //   history.push('/');
     // }
     console.log('PostDetail - componentDidMount ::', location, history, query);
+    if(!isEmpty(location.hash) && location.hash === '#write' && isEmpty(this.props.userInfo)) {
+      history.push('/auth/login');
+    }
+
+    this.setState({groupType: query.groupType});
+    // if(!isEmpty(this.props.location.state) && this.props.location.state.groupType) {
+    //   this.setState({groupType: query.groupType});
+    // }
+
     if(this.props.postId) {
       this._getData();
     } else {
-      const updateBtnEl = <button type="button" className="btn btn-dark btn-sm float-end ms-1" onClick={this.modeChange}>저장</button>;
+      const updateBtnEl = <button type="button" className="btn btn-dark btn-sm btn-fr ms-1" onClick={this.modeChange}>저장</button>;
       this.setState({
         mode: 'modify',
         saveButtonText: '저장',
@@ -58,16 +70,19 @@ class PostDetail extends Component {
     }
   }
   componentWillUpdate () {
+    console.log('componentWillUpdate---');
     // this.modeChange(mode);
   }
   _getData = async() => {
     const res = await axios.get(`/api/posts/detail?id=${this.props.postId}`);
     console.log('/api/posts/detail', res)
+    let deleteBtnEl = '';
     let updateBtnEl = '';
     if(res.data.result.length > 0) {
       // updateBtnEl = <button type="button" className="btn btn-dark btn-sm float-end ms-1" onClick={this.modeChange}>{this.state.saveButtonText}</button>;
       if(!isEmpty(this.props.userInfo) && (this.props.userInfo.email === res.data.result[0].email || res.data.result[0].email === 'test@mail')) {
-        updateBtnEl = <button type="button" className="btn btn-dark btn-sm float-end ms-1" onClick={this.modeChange}>{this.state.saveButtonText}</button>;
+        updateBtnEl = <button type="button" className="btn btn-dark btn-sm btn-fr ms-1" onClick={this.modeChange}>{this.state.saveButtonText}</button>;
+        deleteBtnEl = <button type="button" className="btn btn-dark btn-sm btn-fr ms-1" onClick={this.deletePost}>삭제</button>;
       }
       this.setState({
         title: res.data.result[0].subject,
@@ -75,10 +90,20 @@ class PostDetail extends Component {
         id: res.data.result[0].id,
         image: res.data.result[0].image,
         email: res.data.result[0].email,
-        updateBtnEl: updateBtnEl
+        updateBtnEl: updateBtnEl,
+        deleteBtnEl: deleteBtnEl,
       }) 
     
     }
+  }
+  async deletePost() {
+    try {
+      await axios.delete(`/api/posts/delete?id=${this.props.postId}`);
+      this.props.history.push({pathname: '/posts', search: `?groupType=${this.state.groupType}`});
+    } catch(e) {
+      console.log(e)
+    }
+
   }
  
   changedContent(html) {
@@ -89,7 +114,8 @@ class PostDetail extends Component {
   actionModeChange() {
     const {history} = this.props;
     if(this.state.actionButtonText === '목록') {
-      history.push(this.props.matchUrl);
+      // history.push(this.props.matchUrl);
+      history.push({pathname: '/posts', search: `?groupType=${this.state.groupType}`});
     } else {
       this.setModalShow(true);
     }
@@ -128,12 +154,14 @@ class PostDetail extends Component {
       subject: this.state.title,
       content: this.state.content,
       ip: '',
-      created_at: now
+      created_at: now,
+      groupType: this.state.groupType
+
     }
     await axios.post('/api/posts/regist', params);
     console.log('complete!');
     const {history} = this.props;
-    history.push(this.props.matchUrl);
+    history.push(`${this.props.matchUrl}?groupType=${this.state.groupType}`);
   }
   async _updateContent() {
     // const params = {
@@ -179,7 +207,6 @@ class PostDetail extends Component {
         </div>
         <DraftEditor
           editContent={this.state.content}
-          tempImageUrl={this.state.tempImageUrl}
           onTemperatureChange={this.changedContent}
         />
     </div>
@@ -197,19 +224,18 @@ class PostDetail extends Component {
     if(this.state.mode !== 'read') {
       contentElement = this._editorElement();
     } else {
-      const imageurl = `${this.state.image}`;
       contentElement = <div>
         <div style={{marginBottom: '20px'}}><h2>{this.state.title}</h2></div>
         <div dangerouslySetInnerHTML={ {__html: this.state.content} }></div>
-        <img src={`${process.env.PUBLIC_URL}/uploads/${imageurl}`} />
         </div>;
     }
     return (
       <div>
         {/* <CounterContainer /> */}
         <div className="clearfix mb-2">
+          {this.state.deleteBtnEl}
           {this.state.updateBtnEl}
-          <button type="button" className="btn btn-dark btn-sm float-end ms-1" onClick={this.actionModeChange}>{this.state.actionButtonText}</button>
+          <button type="button" className="btn btn-dark btn-sm btn-fr ms-1" onClick={this.actionModeChange}>{this.state.actionButtonText}</button>
         </div>
         {contentElement}
         <MyVerticallyCenteredModal
@@ -242,8 +268,8 @@ function MyVerticallyCenteredModal(props) {
         </p>
       </Modal.Body>
       <Modal.Footer>
-      <button type="button" className="btn btn-dark btn-sm float-end ms-1" onClick={props.onHide}>취소</button>
-        <button type="button" className="btn btn-dark btn-sm float-end ms-1" onClick={props.onHideConfirm}>확인</button>
+      <button type="button" className="btn btn-dark btn-sm btn-fr ms-1" onClick={props.onHide}>취소</button>
+        <button type="button" className="btn btn-dark btn-sm btn-fr ms-1" onClick={props.onHideConfirm}>확인</button>
         {/* <Button onClick={props.onHide}>Close</Button> */}
       </Modal.Footer>
     </Modal>

@@ -1,8 +1,9 @@
 import React from 'react';
+import MainContents from '../components/contents/MainContents';
 
-const Main = () => {
+const Main = (props) => {
   return (
-    <div></div>
+    <MainContents props={props} />
   )
 }
 

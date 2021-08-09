@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-console.log('process.env.NODE_ENV---', process.env.NODE_ENV);
-console.log('process.env---', process.env);
+// console.log('process.env.NODE_ENV---', process.env.NODE_ENV);
+// console.log('process.env---', process.env);
 
 app.listen(PORT);

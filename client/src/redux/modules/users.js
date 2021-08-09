@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import {isEmpty} from 'lodash';
-import storage from '../../storage';
+import storage from '../../components/lib/storage';
 
 // actions
 

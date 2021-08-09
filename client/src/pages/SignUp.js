@@ -138,6 +138,14 @@ const SignUp = (props) => {
 				email: params.email,
 				password: ''
 			});
+			setValidations({
+				nameMessage: '',
+				emailMessage: '',
+				passwordMessage: '',
+				nameInvalid: false,
+				emailInvalid: false,
+				passwordInvalid: false
+			});
 			// setName(params.name);
 			// setEmail(params.email);
 			setAppId(params.appId);
@@ -170,7 +178,7 @@ const SignUp = (props) => {
 	const doSignUp = async()=> {
 		const reqParams = {name, password, email, appId, provider, ip:props.ipInfo.IPv4}
 		const res = await axios.post('/api/signup', reqParams);
-		props.history.push("/");
+		props.history.push("/auth/login");
 		console.log('onSignUp success!', res);
 	}
 	const ButtonElements = () => {
@@ -209,7 +217,7 @@ const SignUp = (props) => {
 							<div className="card-body">
 								<div className="m-sm-4">
 									<form>
-										<div className="mb-3">
+										<div className="mb-1">
 											<label className="form-label">Name</label>
 											<input className={'form-control form-control-lg' + (nameInvalid ? ' is-invalid' : '')}
 												type="text"
@@ -219,8 +227,9 @@ const SignUp = (props) => {
 												disabled={isDisabled}
 												onChange={onDateChange}
 											/>
+											<div className="invalid-message">{nameMessage}</div>
 										</div>
-										<div className="mb-3">
+										<div className="mb-1">
 											<label className="form-label">Email</label>
 											<input className={'form-control form-control-lg' + (emailInvalid ? ' is-invalid' : '')}
 												type="email" 
@@ -229,8 +238,9 @@ const SignUp = (props) => {
 												placeholder="Enter your email"
 												onChange={onDateChange}
 											/>
+											<div className="invalid-message">{emailMessage}</div>
 										</div>
-										<div className="mb-3">
+										<div className="mb-1">
 											<label className="form-label">Password</label>
 											<input className={'form-control form-control-lg' + (passwordInvalid ? ' is-invalid' : '')}
 												type="password"
@@ -239,6 +249,7 @@ const SignUp = (props) => {
 												value={password}
             						onChange={onDateChange}
 											/>
+											<div className="invalid-message">{passwordMessage}</div>
 										</div>
 										<div className="text-center mt-3">
 											{/* <a href="index.html" className="btn btn-lg btn-primary">Sign up</a> */}

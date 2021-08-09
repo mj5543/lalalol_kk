@@ -4,7 +4,10 @@ import GoogleLoginBtn from './GoogleLoginBtn';
 import {isEmpty} from 'lodash';
 // import InputWithLabel from '../components/auth/InputWithLabel';
 // import * as authActions from '../redux/modules/auth';
-import storage from '../../storage';
+import storage from '../lib/storage';
+import {mapStateToProps, mapDispatchToProps} from '../../redux/connectMapProps';
+import { withRouter } from "react-router-dom";
+import { connect } from 'react-redux';
 
 const InputContents = (props) => {
   console.log('props', props);
@@ -36,7 +39,8 @@ const InputContents = (props) => {
 		} else {
       // setUserInfo(res.data.result[0])
 			// props.userCheck(params)
-			await axios.post('/api/updateLoggedinUser', params);
+			const queryParams = {...params, ip: props.ipInfo.IPv4}
+			await axios.post('/api/updateLoggedinUser', queryParams);
 			const updateRes = await axios.post('/api/userEmailCheck', {email: params.email});
 			storage.set('loggedInfo', updateRes.data.result[0])
 			props.setUserInfo(updateRes.data.result[0])
@@ -88,18 +92,18 @@ const InputContents = (props) => {
 										<div className="mb-3">
 											<label className="form-label">Password</label>
 											<input className="form-control form-control-lg" type="password" name="password" placeholder="Enter your password" />
-											<small>
-            <a href="index.html">Forgot password?</a>
-          </small>
+											{/* <small>
+												<a href="index.html">Forgot password?</a>
+											</small> */}
 										</div>
-										<div>
+										{/* <div>
 											<label className="form-check">
-            <input className="form-check-input" type="checkbox" value="remember-me" name="remember-me" checked />
-            <span className="form-check-label">
-              Remember me next time
-            </span>
-          </label>
-										</div>
+												<input className="form-check-input" type="checkbox" value="remember-me" name="remember-me" checked />
+												<span className="form-check-label">
+													Remember me next time
+												</span>
+											</label>
+										</div> */}
 										<div className="text-center mt-3">
 											<button type="button" className="btn btn-lg btn-primary">Sign in</button>
 											<GoogleLoginBtn onGoogleLogin={provideUserCheck} history={props.history} location={props.location} />
@@ -116,4 +120,11 @@ const InputContents = (props) => {
 	</main>
   )
 }
+// export default withRouter(
+//   connect(
+//     mapStateToProps,
+//     mapDispatchToProps
+//   )(InputContents)
+// );
+
 export default InputContents;

@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "./scss/app.scss";
 import "./css/icons.css";
+import "./css/base.css";
 import Sidebar from './components/navs/Sidebar';
 import NavbarExpandTop from './components/navs/NavbarExpandTop';
 import { Route } from 'react-router-dom';
@@ -14,6 +15,8 @@ import AuthContainer from './components/auth/AuthContainer';
 import LifeCycle from './components/category/menual/react/LifeCycle';
 import ReactEvent from './components/category/menual/react/ReactEvent';
 import Intro from './components/category/menual/react/Intro';
+import Resume from './components/resume/Resume';
+import ContentsContainer from './components/contents/ContentsContainer';
 const App = (props) => {
   console.log('App props', props);
   return (
@@ -21,7 +24,7 @@ const App = (props) => {
       <Sidebar />
         <div className="main">
         <NavbarExpandTop />
-        <Route exact path="/" component={Main}/>
+        <Route exact path="/" component={ContentsContainer}/>
         <Switch>
           <Route path="/profile/:name" component={Profile}/>
           <Route path="/profile" component={Profile}/>
@@ -37,6 +40,7 @@ const App = (props) => {
           <Route path="/auth/sign-up" component={SignUp}/>
         </Switch>
         <Route path="/posts" component={Posts}/>
+        <Route path="/resume" component={Resume}/>
         <Route path="/react/lifecycle" component={LifeCycle}/>
         <Route path="/react/event" component={ReactEvent}/>
         <Route path="/react/intro" component={Intro}/>
