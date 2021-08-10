@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import GoogleLoginBtn from '../components/login/GoogleLoginBtn';
-import {isEmail, isLength, isAlphanumeric} from 'validator';
+import {isEmail, isLength} from 'validator';
 import {isEmpty} from 'lodash';
 import IpAddress from '../components/lib/ip/IpAddress';
 import {mapStateToProps, mapDispatchToProps} from '../redux/connectMapProps';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SignUp = (props) => {
   console.log('props.', props);
@@ -176,10 +177,15 @@ const SignUp = (props) => {
 		}
 	}	
 	const doSignUp = async()=> {
-		const reqParams = {name, password, email, appId, provider, ip:props.ipInfo.IPv4}
-		const res = await axios.post('/api/signup', reqParams);
-		props.history.push("/auth/login");
-		console.log('onSignUp success!', res);
+		try {
+			const reqParams = {name, password, email, appId, provider, ip:props.ipInfo.IPv4}
+			const res = await axios.post('/api/signup', reqParams);
+			toast.success('가입에 성공하였습니다. 로그인을 해주세요.')
+			props.history.push("/auth/login");
+			console.log('onSignUp success!', res);
+		} catch(e) {
+			toast.error('가입에 실패하였습니다.')
+		}
 	}
 	const ButtonElements = () => {
 		let elements = null;

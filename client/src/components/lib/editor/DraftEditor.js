@@ -179,7 +179,11 @@ class DraftEditor extends Component {
             previewImage: true,
             urlEnabled: false,
             uploadEnabled: true,
-            alt: { present: false, mandatory: false } 
+            alt: { present: false, mandatory: false },
+            defaultSize: {
+              height: 'auto',
+              width: 'auto',
+            },
           },
         }} 
         placeholder="내용을 작성해주세요."

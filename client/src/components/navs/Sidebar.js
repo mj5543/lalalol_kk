@@ -134,7 +134,7 @@ class Sidebar extends Component {
               className="sidebar-item"
               isActive={(match, location) => {
                 console.log('match, location', match, location)
-                if(location.search === '?groupType=REACT_LIB') {
+                if(location.search.indexOf('REACT_LIB') > -1) {
                   return true;
                 } else {
                   return false;
@@ -158,7 +158,7 @@ class Sidebar extends Component {
           <NavLink to='/posts?groupType=MASTER'
             isActive={(match, location) => {
               console.log('match, location', match, location)
-              if(location.search === '?groupType=MASTER') {
+              if(location.search.indexOf('MASTER') > -1) {
                 return true;
               } else {
                 return false;
@@ -172,7 +172,7 @@ class Sidebar extends Component {
             <NavLink to='/posts?groupType=GEUST'
               isActive={(match, location) => {
                 console.log('match, location', match, location)
-                if(location.search === '?groupType=GEUST') {
+                if(location.search.indexOf('GEUST') > -1) {
                   return true;
                 } else {
                   return false;
@@ -186,7 +186,7 @@ class Sidebar extends Component {
             <NavLink to='/posts?groupType=GALLERY'
               isActive={(match, location) => {
                 console.log('match, location', match, location)
-                if(location.search === '?groupType=GALLERY') {
+                if(location.search.indexOf('GALLERY') > -1) {
                   return true;
                 } else {
                   return false;

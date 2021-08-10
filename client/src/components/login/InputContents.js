@@ -5,9 +5,9 @@ import {isEmpty} from 'lodash';
 // import InputWithLabel from '../components/auth/InputWithLabel';
 // import * as authActions from '../redux/modules/auth';
 import storage from '../lib/storage';
-import {mapStateToProps, mapDispatchToProps} from '../../redux/connectMapProps';
-import { withRouter } from "react-router-dom";
-import { connect } from 'react-redux';
+// import {mapStateToProps, mapDispatchToProps} from '../../redux/connectMapProps';
+// import { withRouter } from "react-router-dom";
+// import { connect } from 'react-redux';
 
 const InputContents = (props) => {
   console.log('props', props);

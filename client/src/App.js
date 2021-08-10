@@ -17,6 +17,9 @@ import ReactEvent from './components/category/menual/react/ReactEvent';
 import Intro from './components/category/menual/react/Intro';
 import Resume from './components/resume/Resume';
 import ContentsContainer from './components/contents/ContentsContainer';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const App = (props) => {
   console.log('App props', props);
   return (
@@ -48,6 +51,11 @@ const App = (props) => {
           <NoMatch />
         </Route> */}
         <AuthContainer />
+        {/* info, success, warning, error, default, dark */}
+        <ToastContainer
+          position="bottom-center"
+          hideProgressBar={false}
+          autoClose={1500} />
           <footer className="footer">
             <div className="container-fluid">
               <div className="row text-muted">

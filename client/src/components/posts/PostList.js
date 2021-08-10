@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Table from 'react-bootstrap/Table';
-import { Route, Link } from 'react-router-dom';
-import BoardDetail from './PostDetail';
-import Nav from 'react-bootstrap/Nav';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import DataTable from "react-data-table-component";
 import {isEmpty} from 'lodash';
+import ThumbnailList from './ThumbnailList';
 
 class PostList extends Component {
   constructor(props) {
@@ -27,13 +25,11 @@ class PostList extends Component {
       columns: [],
       writeButton: '',
       isLoading: true,
+      contentEl: '',
 
     };  // 초기 state값을 셋팅해준다. 빈 스트링 값은 false를 뜻한다.
   }
   componentDidMount() {
-    // if(!isEmpty(this.props.location.state) && this.props.location.state.groupType) {
-    //   this.setState({groupType: this.props.location.state.groupType});
-    // }
     this.setState({
       groupType: this.props.groupType,
       columns: this._getDataColumns()
@@ -77,13 +73,13 @@ class PostList extends Component {
     return [
       {
         name: "작성자",
-        selector: "name",
+        selector: row => `${row.name}`,
         sortable: true,
         grow: 1,
       },
       {
         name: "글 제목",
-        selector: "subject",
+        selector: row => row.subject,
         sortable: true,
         compact: false,
         grow: 8,
@@ -93,7 +89,7 @@ class PostList extends Component {
       },
       {
         name: "작성일",
-        selector: "created_at",
+        selector: row => row.created_at,
         sortable: true,
         right: false,
         grow: 1,
@@ -126,8 +122,31 @@ class PostList extends Component {
       isLoading: false,
       // password: '',
     }) //사용자가 입력한 값이 재확인 비번과 일치하지 않을 경우
-  // this.setState({ hello : res.data.hello })
-  }  
+    this._setContents();
+  } 
+  _setContents() {
+    let contentEl;
+    if(this.props.groupType === 'GALLERY') {
+      contentEl = <ThumbnailList />
+    } else {
+      contentEl = <DataTable
+      columns={this.state.columns}
+      data={this.state.dataList}
+      responsive={true}
+      // customTheme={this.darkTheme()}
+      customStyles={this.customStyles()}
+      defaultSortAsc={false}
+      pagination
+      paginationPerPage={15}
+      highlightOnHover
+      noDataComponent="등록된 글이 없습니다."
+      progressPending={this.state.isLoading}
+    />
+    }
+    this.setState({
+      contentEl: contentEl
+    })
+  }
   boardList(list) {
     try{
       const listItems = list.map((item, index) =>
@@ -243,19 +262,7 @@ class PostList extends Component {
           </button> */}
         </div>
         <div className="card">
-          <DataTable
-            columns={this.state.columns}
-            data={this.state.dataList}
-            responsive={true}
-            // customTheme={this.darkTheme()}
-            customStyles={this.customStyles()}
-            defaultSortAsc={false}
-            pagination
-            paginationPerPage={15}
-            highlightOnHover
-            noDataComponent="등록된 글이 없습니다."
-            progressPending={this.state.isLoading}
-          />
+          {this.state.contentEl}
           {/* <Table striped bordered hover size="sm">
             <colgroup>
               <col width="20%"></col>

@@ -127,7 +127,7 @@ router.post('/api/posts/update', upload.single('file'), function(request, respon
   // });
   let now = new Date();
   // let sql = 'INSERT INTO posts (name, email, password, subject, content, ip, created_at) VALUES (?, ?, ?, ?, ?, inet_aton(?), ?)';
-  let sql = 'UPDATE posts SET email = ?, name = ?, subject =?, content = ?, updated_at = ?, image = ? WHERE id = ?';
+  let sql = 'UPDATE posts SET email = ?, name = ?, subject =?, content = ?, updated_at = ?, ip = ?, image = ? WHERE id = ?';
   const content = `${data.content}`;
   let image = null;
   console.log('request.file', request.file);
@@ -144,6 +144,7 @@ router.post('/api/posts/update', upload.single('file'), function(request, respon
     data.title,
     content,
     now,
+    data.ip,
     image,
     data.id,
   ];
@@ -183,8 +184,8 @@ router.get('/api/posts/list', function(request, response) {
 });
 router.get('/api/posts/list-members-preview', function(request, response) {
   // let sql = 'SELECT * FROM posts ORDER BY id DESC LIMIT 10';
-  let sql = 'SELECT * FROM posts ORDER BY id DESC LIMIT 12';
-  connection.query(sql, (err, data, fields) => {
+  let sql = 'SELECT * FROM posts WHERE group_type NOT IN (?) ORDER BY id DESC LIMIT 12';
+  connection.query(sql, ['GALLERY'], (err, data, fields) => {
     if (err) { 
       res.status(500);
       res.render('error', { error: err });
@@ -199,8 +200,8 @@ router.get('/api/posts/list-members-preview', function(request, response) {
 });
 router.get('/api/posts/list-preview', function(request, response) {
   // let sql = 'SELECT * FROM posts ORDER BY id DESC LIMIT 10';
-  let sql = 'SELECT * FROM posts WHERE group_type NOT IN (?) ORDER BY id DESC LIMIT 12';
-  connection.query(sql, ['MASTER'], (err, data, fields) => {
+  let sql = 'SELECT * FROM posts WHERE group_type NOT IN (?, ?) ORDER BY id DESC LIMIT 12';
+  connection.query(sql, ['MASTER', 'GALLERY'], (err, data, fields) => {
     if (err) { 
       response.status(500);
       response.render('error', { error: err });

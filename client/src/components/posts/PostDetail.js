@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DraftEditor from '../lib/editor/DraftEditor';
 import Modal from 'react-bootstrap/Modal'
-import { uploadFile } from 'react-s3';
-import CounterContainer from '../CounterContainer'; 
+// import { uploadFile } from 'react-s3';
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { isEmpty } from 'lodash';
 import queryString from 'query-string';
 import ToastUIEditor from '../lib/editor/ToastUIEditor';
+import * as userActions from "../../redux/modules/users";
+import { toast } from "react-toastify";
 
 class PostDetail extends Component {
   constructor(props) {
-    console.log('BoardDetail props--', props, process.env);
+    console.log('PostDetail props--', props, process.env);
     super(props);
     this.state  = {
       title: '',
@@ -44,7 +45,6 @@ class PostDetail extends Component {
     const {location, history} = this.props;
     //TODO
     const query = queryString.parse(location.search);
-    console.log('query---', query);
     // if(!state){
     //   history.push('/');
     // }
@@ -71,8 +71,6 @@ class PostDetail extends Component {
     }
   }
   componentWillUpdate () {
-    console.log('componentWillUpdate---');
-    // this.modeChange(mode);
   }
   _getData = async() => {
     const res = await axios.get(`/api/posts/detail?id=${this.props.postId}`);
@@ -81,7 +79,7 @@ class PostDetail extends Component {
     let updateBtnEl = '';
     if(res.data.result.length > 0) {
       // updateBtnEl = <button type="button" className="btn btn-dark btn-sm float-end ms-1" onClick={this.modeChange}>{this.state.saveButtonText}</button>;
-      if(!isEmpty(this.props.userInfo) && (this.props.userInfo.email === res.data.result[0].email || res.data.result[0].email === 'test@mail')) {
+      if(!isEmpty(this.props.userInfo) && (this.props.userInfo.email === res.data.result[0].email || this.props.userInfo.grade === 'MASTER')) {
         updateBtnEl = <button type="button" className="btn btn-dark btn-sm btn-fr ms-1" onClick={this.modeChange}>{this.state.saveButtonText}</button>;
         deleteBtnEl = <button type="button" className="btn btn-dark btn-sm btn-fr ms-1" onClick={this.deletePost}>삭제</button>;
       }
@@ -146,20 +144,40 @@ class PostDetail extends Component {
       title: e.target.value
     })
   }
+  _contentValidation() {
+    if(isEmpty(this.state.title)) {
+      toast.error("글 제목을 입력하세요.");
+      return false;
+    }
+    if(isEmpty(this.state.content)) {
+      toast.error("내용을 입력하세요.");
+      return false;
+    }
+    const newText = this.state.content.replace(/(<([^>]+)>)/ig,"");
+    if(newText.length < 30 && this.state.groupType !== 'GALLERY') {
+      toast.error("내용을 30자 이상 입력하세요.");
+      return false;
+    }
+    return true;
+  }
   async _registContent() {
+    if(!this._contentValidation()) {
+      return;
+    }
     const now = new Date();
     const params = {
       name: this.props.userInfo.username,
       email: this.props.userInfo.email,
-      password: '1111',
+      password: '',
       subject: this.state.title,
       content: this.state.content,
-      ip: '',
+      ip: this.props.ipInfo.IPv4,
       created_at: now,
       groupType: this.state.groupType
 
     }
     await axios.post('/api/posts/regist', params);
+    toast.success('저장되었습니다.')
     console.log('complete!');
     const {history} = this.props;
     history.push(`${this.props.matchUrl}?groupType=${this.state.groupType}`);
@@ -177,6 +195,7 @@ class PostDetail extends Component {
     formData.append(`file`, this.state.file);
     formData.append(`title`, this.state.title);
     formData.append(`content`, this.state.content);
+    formData.append(`ip`, this.props.ipInfo.IPv4);
     formData.append(`id`, this.state.id);
     const config = {
       headers: {
@@ -187,34 +206,36 @@ class PostDetail extends Component {
     this.setState({
       mode: 'read',
       saveButtonText: '수정'
-    })
+    });
     this._getData();
+    toast.success('저장되었습니다.');
     console.log('complete!');
   }
   _editorElement() {
+    let editEl;
+    if(this.state.groupType === 'GALLERY') {
+      editEl = <DraftEditor
+      editContent={this.state.content}
+      onTemperatureChange={this.changedContent}
+    />
+
+    } else {
+      editEl = <ToastUIEditor
+      editContent={this.state.content}
+      onTemperatureChange={this.changedContent}
+    />
+
+    }
     return <div>
-      {/* <div className="row mb-3">
-        <label for="colFormLabelSm" className="col-sm-2 col-form-label col-form-label-sm">Email</label>
-        <div className="col-sm-10">
-          <input type="email" className="form-control form-control-sm" id="colFormLabelSm" placeholder="col-form-label-sm" />
-        </div>
-      </div> */}
-        <div className="input-group mb-3">
-          <span className="input-group-text" id="inputGroup-sizing-default">Title</span>
-          <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" 
-            value={this.state.title}
-            onChange={this.titleChanged}
-          />
-        </div>
-        <ToastUIEditor
-          editContent={this.state.content}
-          onTemperatureChange={this.changedContent}
-        />
-        {/* <DraftEditor
-          editContent={this.state.content}
-          onTemperatureChange={this.changedContent}
-        /> */}
-    </div>
+              <div className="input-group mb-3">
+                <span className="input-group-text" id="inputGroup-sizing-default">Title</span>
+                <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" 
+                  value={this.state.title}
+                  onChange={this.titleChanged}
+                />
+              </div>
+              {editEl}
+          </div>
   }
 
   setModalShow(isShow) {
@@ -280,11 +301,18 @@ function MyVerticallyCenteredModal(props) {
 }
 const mapStateToProps = state => ({
   logged: state.users.logged,
-  userInfo: state.users.userInfo
+  userInfo: state.users.userInfo,
+  ipInfo: state.users.ipInfo
 });
+const mapDispatchToProps = dispatch => {
+  return {
+    getIpInfo: () => dispatch(userActions.actionCreators.getIpInfo())
+  };
+};
 export default withRouter(
   connect(
     mapStateToProps,
+    mapDispatchToProps
   )(PostDetail)
 );
 // export default PostDetail;
