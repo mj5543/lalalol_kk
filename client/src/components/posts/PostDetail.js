@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { isEmpty } from 'lodash';
 import queryString from 'query-string';
+import ToastUIEditor from '../lib/editor/ToastUIEditor';
 
 class PostDetail extends Component {
   constructor(props) {
@@ -205,10 +206,14 @@ class PostDetail extends Component {
             onChange={this.titleChanged}
           />
         </div>
-        <DraftEditor
+        <ToastUIEditor
           editContent={this.state.content}
           onTemperatureChange={this.changedContent}
         />
+        {/* <DraftEditor
+          editContent={this.state.content}
+          onTemperatureChange={this.changedContent}
+        /> */}
     </div>
   }
 
@@ -219,8 +224,6 @@ class PostDetail extends Component {
   }
   render(){
     let contentElement;
-    console.log('__dirname--', __dirname);
-    console.log('process.env.REACT_APP_S3_BUCKET_NAME--', process.env.REACT_APP_S3_BUCKET_NAME);
     if(this.state.mode !== 'read') {
       contentElement = this._editorElement();
     } else {

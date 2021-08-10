@@ -69,32 +69,35 @@ class MainContents extends Component {
   // this.setState({ hello : res.data.hello })
   }
   _getDataList = async() => {
-    const res = await axios.get(`/api/posts/list-members-preview`);
-    console.log('_getList--', res);
-    let dataList = res.data.result;
-    if(!isEmpty(res.data.result)) {
-      dataList = res.data.result.map(d => {
-        let preContent = d.content;
-        if (d.content.length > 100) {
-          preContent = d.content.substr(0, 100).concat('...');
-        }
-        d.preContent = preContent;
-        return d;
-      });
+    try {
+      const res = await axios.get(`/api/posts/list-members-preview`);
+      console.log('_getList--', res);
+      let dataList = res.data.result;
+      if(!isEmpty(res.data.result)) {
+        dataList = res.data.result.map(d => {
+          let preContent = d.content;
+          // var newText = d.content.replace(/(<([^>]+)>)/ig,"");
+          // console.log('newText--', newText);
+          if (d.content.length > 150) {
+            preContent = d.content.substr(0, 200).concat('...');
+          }
+          d.preContent = preContent;
+          return d;
+        });
+      }
+      this.setState({
+        loading: false,
+        dataList: dataList
+      })
+    } catch(e) {
+      this._getDataList();
     }
-    this.setState({
-      loading: false,
-      dataList: dataList
-    })
   }
-  cardList(list) {
-
-  }
+ 
   boardList(list) {
     try{
       const listItems = list.map((item, index) =>
       <tr key={index}>
-        {/* <td>{item.id}</td> */}
         <td>{item.name}</td>
         {/* <Nav.Link href={`${this.props.pathInfo.url}/detail#${item.id}`}>
           <td>{item.subject}</td>
@@ -129,26 +132,17 @@ class MainContents extends Component {
        <Row xs={2} md={3} className="g-1">
          {this.state.dataList.map((data,index) =>
               <Col key={index}>
-              <Card style={{minHeight:'230px'}}>
+              <Card style={{minHeight:'250px', maxHeight: '300px'}}>
                 <Card.Body>
                   <Card.Title>{data.subject}</Card.Title>
                   <Card.Text>
-                  <div dangerouslySetInnerHTML={ {__html: data.preContent} }></div>
+                  <div style={{minHeight:'150px', maxHeight: '150px', textOverflow: 'ellipsis'}} dangerouslySetInnerHTML={ {__html: data.preContent} }></div>
                   </Card.Text>
-                  {/* <Card.Link href="#">이 글 자세히</Card.Link> */}
-                {/* <Card.Link href="#">이 글 목록</Card.Link> */}
                 </Card.Body>
                 <div style={{padding: '10px'}}>
-                {/* <button type="button" className="btn btn-sm btn-outline-secondary" onClick={this.goDetail(data)}>Detail</button> */}
                 <button type="button" className="btn btn-outline-secondary btn-sm btn-br mr-10">
                   <Link to={{pathname:`/posts/detail`, search: `?id=${data.id}&groupType=${data.group_type}`}} className="btn-text-s">read more</Link>
                 </button>
-                {/* <button type="button" className="btn btn-outline-secondary btn-sm btn-br">
-                <NavLink to={`/posts?groupType=${data.group_type}`} className="btn-text-s">
-                    List
-                  </NavLink>
-                </button> */}
-
                 </div>
               </Card>
             </Col>

@@ -170,18 +170,32 @@ class Sidebar extends Component {
               </li>
             </NavLink>
             <NavLink to='/posts?groupType=GEUST'
-            isActive={(match, location) => {
-              console.log('match, location', match, location)
-              if(location.search === '?groupType=GEUST') {
-                return true;
-              } else {
-                return false;
-              }
-            }}
-            className="sidebar-item" activeClassName="active">
-              <li className="sidebar-link">
-                   <span className="align-middle">Geust post</span>
-              </li>
+              isActive={(match, location) => {
+                console.log('match, location', match, location)
+                if(location.search === '?groupType=GEUST') {
+                  return true;
+                } else {
+                  return false;
+                }
+              }}
+              className="sidebar-item" activeClassName="active">
+                <li className="sidebar-link">
+                    <span className="align-middle">Geust post</span>
+                </li>
+            </NavLink>
+            <NavLink to='/posts?groupType=GALLERY'
+              isActive={(match, location) => {
+                console.log('match, location', match, location)
+                if(location.search === '?groupType=GALLERY') {
+                  return true;
+                } else {
+                  return false;
+                }
+              }}
+              className="sidebar-item" activeClassName="active">
+                <li className="sidebar-link">
+                    <span className="align-middle">Gallery</span>
+                </li>
             </NavLink>
 
 

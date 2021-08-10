@@ -1,7 +1,7 @@
 import React from 'react';
 import UserCheck from '../components/login/UserCheck';
 import ActivityContents from '../components/contents/ActivityContents';
-const Profile = () => {
+const Profile = (props) => {
   return (
     <main className="content">
     <UserCheck />
@@ -71,7 +71,7 @@ const Profile = () => {
             </div>
           </div>
         </div>
-              <ActivityContents />
+              <ActivityContents history={props.history} />
         
       </div>
 

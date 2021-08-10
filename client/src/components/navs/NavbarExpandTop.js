@@ -253,7 +253,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(userActions.actionCreators.setUserInfo(info));
     },
     logout: () => {
-      dispatch(userActions.actionCreators.logout());
+      dispatch({type: 'LOGOUT'})
+      // dispatch(userActions.actionCreators.logout());
     },
     setUserTemp: ({ id, username }) => {
       dispatch(authActions.setUserTemp({ id, username }));

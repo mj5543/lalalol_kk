@@ -34,14 +34,18 @@ class ActivityContents extends Component {
     this._getList();
   }
   _getList = async() => {
-    const res = await axios.get('/api/posts/activities');
-    console.log('_getList--', res)
-    // const bodyEle = this.boardList(res.data.result);
-    this.setState({
-      // bodyEle: bodyEle,
-      loading: false,
-      dataList: res.data.result
-    }) 
+    try {
+      const res = await axios.get('/api/posts/activities');
+      console.log('_getList--', res)
+      // const bodyEle = this.boardList(res.data.result);
+      this.setState({
+        // bodyEle: bodyEle,
+        loading: false,
+        dataList: res.data.result
+      }) 
+    } catch(e) {
+      this.props.history.push('/');
+    }
   }
  
   boardList(list) {
@@ -81,14 +85,14 @@ class ActivityContents extends Component {
           <h5 className="card-title mb-0">Activities</h5>
         </div>
         <div className="card-body h-100">
-          {this.state.dataList.map(data => 
-            <div>
+          {this.state.dataList.map((data, index) => 
+            <div key={index}>
               <div className="d-flex align-items-start">
                 <img src={data.user_image} width="36" height="36" className="rounded-circle me-2" alt="Vanessa Tucker" />
                 <div className="flex-grow-1">
                   {/* <small className="float-end text-navy">5m ago</small> */}
                   <strong>{data.name}</strong> {data.subject} <strong>게시글이 작성되었습니다.</strong><br />
-                  <small className="text-muted">{data.created_at}</small><br />
+                  <small className="text-muted">{this.dateTimeFormat(data.created_at)}</small><br />
 
                 </div>
               </div>

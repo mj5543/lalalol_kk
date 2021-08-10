@@ -48,9 +48,10 @@ export class ContentsContainer extends Component {
 const mapStateToProps = state => ({
   logged: state.users.logged,
   userInfo: state.users.userInfo,
-  ipInfo: state.users.ipInfo
+  ipInfo: state.users.ipInfo,
+  provideInfo: state.users.provideInfo
 });
-
+//dispatch({type: 'reset', payload: initialCount}
 const mapDispatchToProps = dispatch => {
   return {
     // checkUser: () => {

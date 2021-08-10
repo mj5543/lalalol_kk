@@ -7,7 +7,7 @@ import "./css/icons.css";
 import "./css/base.css";
 import Sidebar from './components/navs/Sidebar';
 import NavbarExpandTop from './components/navs/NavbarExpandTop';
-import { Route } from 'react-router-dom';
+import { Route, useLocation } from 'react-router-dom';
 import { Switch } from 'react-router-dom/cjs/react-router-dom.min';
 import { Main, Posts, Profile, SignIn, SignUp} from './pages';
 import BaseContainer from './components/auth/BaseContainer';
@@ -44,6 +44,9 @@ const App = (props) => {
         <Route path="/react/lifecycle" component={LifeCycle}/>
         <Route path="/react/event" component={ReactEvent}/>
         <Route path="/react/intro" component={Intro}/>
+        {/* <Route path="*">
+          <NoMatch />
+        </Route> */}
         <AuthContainer />
           <footer className="footer">
             <div className="container-fluid">
@@ -77,5 +80,15 @@ const App = (props) => {
 
   )
 }
+function NoMatch() {
+  let location = useLocation();
 
+  return (
+    <div>
+      <h3>
+        No match for <code>{location.pathname}</code>
+      </h3>
+    </div>
+  );
+}
 export default App;

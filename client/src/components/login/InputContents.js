@@ -51,6 +51,7 @@ const InputContents = (props) => {
 			const updateRes = await axios.post('/api/userEmailCheck', {email: params.email});
 			storage.set('loggedInfo', updateRes.data.result[0])
 			props.setUserInfo(updateRes.data.result[0])
+			props.setProvideInfo(params);
 			// dispatch({type: SET_PROVIDE_USER_CHECK, user: res.data.result[0]})
 			console.log('storage.get', storage.get('loggedInfo'))
 			console.log(props.store.getState())

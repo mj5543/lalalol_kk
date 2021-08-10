@@ -25,7 +25,8 @@ class PostList extends Component {
       dataList: [],
       groupType: '',
       columns: [],
-      writeButton: ''
+      writeButton: '',
+      isLoading: true,
 
     };  // 초기 state값을 셋팅해준다. 빈 스트링 값은 false를 뜻한다.
   }
@@ -39,13 +40,14 @@ class PostList extends Component {
     });
 
     this._getCateroeyList();
+    this._setWriteButton();
     // this._getList();
   }
   componentDidUpdate() {
     if(this.state.groupType !== this.props.groupType) {
       this.setState({
         groupType: this.props.groupType,
-        columns: this._getDataColumns()
+        // columns: this._getDataColumns()
       });
       this._setWriteButton();
       this._getCateroeyList();
@@ -68,7 +70,7 @@ class PostList extends Component {
               </button>
     }
     this.setState({
-      writeButton: btnEl
+      writeButton: btnEl,
     })
   }
   _getDataColumns() {
@@ -95,8 +97,8 @@ class PostList extends Component {
         sortable: true,
         right: false,
         grow: 1,
-        format: d => moment(d).format('YYYY.MM.DD'),
-        // cell: d => <span>{moment(d).format('YYYY.MM.DD')}</span>,
+        format: d => moment(d.created_at).format('YYYY.MM.DD'),
+        // cell: d => <span>{moment(d.created_at).format('YYYY.MM.DD')}</span>,
       }
     ]
   }
@@ -108,7 +110,7 @@ class PostList extends Component {
     this.setState({
       bodyEle: bodyEle,
       loading: false,
-      dataList: res.data.result
+      dataList: res.data.result,
       // password: '',
     }) //사용자가 입력한 값이 재확인 비번과 일치하지 않을 경우
   // this.setState({ hello : res.data.hello })
@@ -120,7 +122,8 @@ class PostList extends Component {
     this.setState({
       // bodyEle: bodyEle,
       loading: false,
-      dataList: res.data.result
+      dataList: res.data.result,
+      isLoading: false,
       // password: '',
     }) //사용자가 입력한 값이 재확인 비번과 일치하지 않을 경우
   // this.setState({ hello : res.data.hello })
@@ -250,6 +253,8 @@ class PostList extends Component {
             pagination
             paginationPerPage={15}
             highlightOnHover
+            noDataComponent="등록된 글이 없습니다."
+            progressPending={this.state.isLoading}
           />
           {/* <Table striped bordered hover size="sm">
             <colgroup>

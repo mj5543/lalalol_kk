@@ -49,7 +49,8 @@ export class BaseContainer extends Component {
 const mapStateToProps = state => ({
   logged: state.users.logged,
   userInfo: state.users.userInfo,
-  ipInfo: state.users.ipInfo
+  ipInfo: state.users.ipInfo,
+  provideInfo: state.users.provideInfo
 });
 
 const mapDispatchToProps = dispatch => {
@@ -65,6 +66,9 @@ const mapDispatchToProps = dispatch => {
     },
     setUserTemp: ({ id, username }) => {
       dispatch(authActions.setUserTemp({ id, username }));
+    },
+    setProvideInfo: (info) => {
+			dispatch({type: 'SET_PROVIDE_USER_CHECK', info})
     }
   };
 };

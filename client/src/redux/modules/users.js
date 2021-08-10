@@ -80,7 +80,7 @@ const logout = () => ({
 
 // Initial State
 
-const initialState = {logged: false, userInfo: {}, ipInfo: {}};
+const initialState = {logged: false, userInfo: {}, ipInfo: {}, provideInfo: {}};
 
 // Reducer
 
@@ -102,10 +102,10 @@ function reducer(state = initialState, action) {
 // Reducer Functions
 
 function applySetProvideUserCheck(state, action) {
-  const { items } = action;
+  const { provideInfo } = action;
   return {
     ...state,
-    items
+    provideInfo
   };
 }
 function applyUserInfo(state, action) {
