@@ -12,9 +12,11 @@
 # testing
 /coverage
 /client/src/html
+/client/public/css
 
 # production
 /client/src/components
+/client/src/components/*.css
 # /client/build
 # /db.js
 /client/public/upload
@@ -36,4 +38,3 @@ yarn.lock*
 package-lock.json*
 example.txt*
 account.txt
-*.css
