@@ -10,16 +10,16 @@ const Posts = (props) => {
   let elements = '<div></div>'
   const query = queryString.parse(props.location.search);
   if(query.id) {
-    elements = <PostDetail postId={query.id} groupType={query.groupType} isRegist={false} userInfo={props.userInfo} location={props.location} history={props.history}  matchUrl={props.match.url} />
+    elements = <PostDetail categoryGroups={props.categoryGroups} postId={query.id} groupType={query.groupType} isRegist={false} userInfo={props.userInfo} location={props.location} history={props.history}  matchUrl={props.match.url} />
   } else if(props.location.hash !== "") {
-      elements = <PostDetail  isRegist={true} groupType={query.groupType} userInfo={props.userInfo} location={props.location} history={props.history} matchUrl={props.match.url} />
+      elements = <PostDetail categoryGroups={props.categoryGroups} isRegist={true} groupType={query.groupType} userInfo={props.userInfo} location={props.location} history={props.history} matchUrl={props.match.url} />
   } else {
       // props.history.replace(props.history.location)
-      elements = <PostList pathInfo={props.match} userInfo={props.userInfo} groupType={query.groupType} location={props.location} history={props.history} />
+      elements = <PostList categoryGroups={props.categoryGroups} pathInfo={props.match} userInfo={props.userInfo} groupType={query.groupType} location={props.location} history={props.history} />
   }
 
   return (
-    <main className="content">
+    <main className="content" style={{backgroundColor: '#fff'}}>
       <div className="container-fluid p-0">
 
         {/* <h1 className="h3 mb-3">Post Page</h1> */}
@@ -43,7 +43,8 @@ const Posts = (props) => {
 }
 const mapStateToProps = state => ({
   logged: state.users.logged,
-  userInfo: state.users.userInfo
+  userInfo: state.users.userInfo,
+  categoryGroups: state.users.categoryGroups,
 });
 export default withRouter(
   connect(

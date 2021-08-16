@@ -7,12 +7,14 @@ if (process.env.NODE_ENV === "production") {
 }
 const userRouter = require('./routes/user.js')
 const postsRouter = require('./routes/posts.js')
+const adminRouter = require('./routes/admin.js')
 app.get("/api/greeting", (req, res) => {
   res.send("Hello World!");
 });
 
 app.use(userRouter);
 app.use(postsRouter);
+app.use(adminRouter);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "client/build", "index.html"));

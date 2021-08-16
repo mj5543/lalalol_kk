@@ -10,6 +10,7 @@ import queryString from 'query-string';
 import ToastUIEditor from '../lib/editor/ToastUIEditor';
 import * as userActions from "../../redux/modules/users";
 import { toast } from "react-toastify";
+import CategorySeletctList from './CategorySeletctList';
 
 class PostDetail extends Component {
   constructor(props) {
@@ -99,22 +100,28 @@ class PostDetail extends Component {
     try {
       await axios.delete(`/api/posts/delete?id=${this.props.postId}`);
       this.props.history.push({pathname: '/posts', search: `?groupType=${this.state.groupType}`});
+      toast.success('삭제되었습니다.')
     } catch(e) {
       console.log(e)
     }
 
   }
  
-  changedContent(html) {
+  changedContent(obj) {
+    let imageUrl = this.state.image;
+    if(!isEmpty(obj.image)) {
+      imageUrl = `${process.env.REACT_APP_IMAGE_PATH}/${obj.image}`;
+    }
     this.setState({
-      content: html
+      content: obj.content,
+      image: imageUrl
     });
   }
   actionModeChange() {
     const {history} = this.props;
     if(this.state.actionButtonText === '목록') {
       // history.push(this.props.matchUrl);
-      history.push({pathname: '/posts', search: `?groupType=${this.state.groupType}`});
+      history.push({pathname: '/posts', search: `?groupType=${this.state.groupType}`, state: this.props.location.state});
     } else {
       this.setModalShow(true);
     }
@@ -122,7 +129,7 @@ class PostDetail extends Component {
   goList() {
     const {history} = this.props;
     this.setModalShow(false);
-    history.push(this.props.matchUrl);
+    history.push({pathname: '/posts', search: `?groupType=${this.state.groupType}`, state: this.props.location.state});
   
   }
   modeChange() {
@@ -173,7 +180,8 @@ class PostDetail extends Component {
       content: this.state.content,
       ip: this.props.ipInfo.IPv4,
       created_at: now,
-      groupType: this.state.groupType
+      groupType: this.state.groupType,
+      image: this.state.image
 
     }
     await axios.post('/api/posts/regist', params);
@@ -197,6 +205,7 @@ class PostDetail extends Component {
     formData.append(`content`, this.state.content);
     formData.append(`ip`, this.props.ipInfo.IPv4);
     formData.append(`id`, this.state.id);
+    formData.append(`image`, this.state.image);
     const config = {
       headers: {
         'content-type': 'multipart/form-data'
@@ -257,6 +266,7 @@ class PostDetail extends Component {
       <div>
         {/* <CounterContainer /> */}
         <div className="clearfix mb-2">
+        <CategorySeletctList location={this.props.location} categoryGroups={this.props.categoryGroups} isDisabled={true} groupType={this.props.groupType}/> 
           {this.state.deleteBtnEl}
           {this.state.updateBtnEl}
           <button type="button" className="btn btn-dark btn-sm btn-fr ms-1" onClick={this.actionModeChange}>{this.state.actionButtonText}</button>

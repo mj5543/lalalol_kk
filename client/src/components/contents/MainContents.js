@@ -76,11 +76,14 @@ class MainContents extends Component {
       if(!isEmpty(res.data.result)) {
         dataList = res.data.result.map(d => {
           let preContent = d.content;
-          // var newText = d.content.replace(/(<([^>]+)>)/ig,"");
+          preContent = preContent.replace(/(<([^>]+)>)/ig,"");
+          preContent = preContent.replace(/\r\n|\n/g, '');
+               // var newText = d.content.replace(/(<([^>]+)>)/ig,"");
           // console.log('newText--', newText);
-          if (d.content.length > 150) {
-            preContent = d.content.substr(0, 200).concat('...');
+          if (preContent.length > 230) {
+            preContent = preContent.substr(0, 230).concat('...');
           }
+          console.log('preContent---', preContent);
           d.preContent = preContent;
           return d;
         });
@@ -132,11 +135,13 @@ class MainContents extends Component {
        <Row xs={2} md={3} className="g-1">
          {this.state.dataList.map((data,index) =>
               <Col key={index}>
-              <Card style={{minHeight:'250px', maxHeight: '300px'}}>
-                <Card.Body>
+              <Card style={{minHeight:'250px', fontFamily: 'GothicL'}}>
+                <Card.Header>
                   <Card.Title>{data.subject}</Card.Title>
+                </Card.Header>
+                <Card.Body>
                   <Card.Text>
-                  <div style={{minHeight:'150px', maxHeight: '150px', textOverflow: 'ellipsis'}} dangerouslySetInnerHTML={ {__html: data.preContent} }></div>
+                  <div style={{textOverflow: 'ellipsis'}} dangerouslySetInnerHTML={ {__html: data.preContent} }></div>
                   </Card.Text>
                 </Card.Body>
                 <div style={{padding: '10px'}}>

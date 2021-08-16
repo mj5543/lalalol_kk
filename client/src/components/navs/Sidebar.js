@@ -59,9 +59,9 @@ class Sidebar extends Component {
   render() {
     return (
       <nav id="sidebar" className="sidebar js-sidebar">
-			<div className="sidebar-content js-simplebar">
+			<div className="sidebar-content js-simplebar" style={{fontFamily: 'STIX Two Text', fontSize: '15px'}}>
       <NavLink exact to="/" className="sidebar-brand">
-        <span className="align-middle">minju's blog</span>
+        <span className="align-middle">Minju's Blog</span>
       </NavLink>
 				{/* <a className="sidebar-brand" href="index.html">
           <span className="align-middle">#</span>

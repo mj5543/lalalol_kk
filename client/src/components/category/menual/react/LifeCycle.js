@@ -4,7 +4,7 @@ import Code from '../../../lib/code/PrismCode';
 const LifeCycle = () => {
   const containerStyle = {
     width: '100%',
-    height: '100vh',
+    height: 'calc(100vh - 70px)',
     float: 'right',
     backgroundColor: '#f1f1f1',
     padding: '20px'

@@ -5,7 +5,7 @@ import moment from 'moment';
 import DataTable from "react-data-table-component";
 import {isEmpty} from 'lodash';
 import ThumbnailList from './ThumbnailList';
-
+import CategorySeletctList from './CategorySeletctList';
 class PostList extends Component {
   constructor(props) {
     console.log('props--', props);
@@ -43,7 +43,6 @@ class PostList extends Component {
     if(this.state.groupType !== this.props.groupType) {
       this.setState({
         groupType: this.props.groupType,
-        // columns: this._getDataColumns()
       });
       this._setWriteButton();
       this._getCateroeyList();
@@ -57,12 +56,13 @@ class PostList extends Component {
     }
     let btnEl = ''
     if (this.props.groupType !== 'GEUST' && this.props.userInfo.grade === 'MASTER') {
-      btnEl =  <button type="button" className="btn btn-dark btn-sm btn-fr">
-              <Link to={`${this.props.pathInfo.url}?groupType=${this.props.groupType}#write`} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link>
+      btnEl =  <button type="button" className="btn btn-dark btn-sm btn-fr mt-20">
+              <Link to={{pathname:`${this.props.pathInfo.url}/detail`, search: `?groupType=${this.props.groupType}`, state: this.props.location.state, hash:'#write'}} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link>
+              {/* <Link to={`${this.props.pathInfo.url}?groupType=${this.props.groupType}#write`} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link> */}
               </button>
     } else if (this.props.groupType === 'GEUST') {
-      btnEl =  <button type="button" className="btn btn-dark btn-sm btn-fr">
-              <Link to={`${this.props.pathInfo.url}?groupType=${this.props.groupType}#write`} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link>
+      btnEl =  <button type="button" className="btn btn-dark btn-sm btn-fr mt-20">
+              <Link to={{pathname:`${this.props.pathInfo.url}/detail`, search: `?groupType=${this.props.groupType}`, state: this.props.location.state, hash:'#write'}} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link>
               </button>
     }
     this.setState({
@@ -83,7 +83,7 @@ class PostList extends Component {
         sortable: true,
         compact: false,
         grow: 8,
-        cell: d => <Link to={{pathname:`${this.props.pathInfo.url}/detail`, search: `?id=${d.id}&groupType=${this.props.groupType}`}} className="nav-link text-dark">
+        cell: d => <Link to={{pathname:`${this.props.pathInfo.url}/detail`, search: `?id=${d.id}&groupType=${this.props.groupType}`, state: this.props.location.state}} className="nav-link text-dark">
         <td>{d.subject}</td>
       </Link>
       },
@@ -127,7 +127,7 @@ class PostList extends Component {
   _setContents() {
     let contentEl;
     if(this.props.groupType === 'GALLERY') {
-      contentEl = <ThumbnailList />
+      contentEl = <ThumbnailList dataList={this.state.dataList} />
     } else {
       contentEl = <DataTable
       columns={this.state.columns}
@@ -255,13 +255,14 @@ class PostList extends Component {
     return (
       <div>
         {/* <Route path={`${this.props.pathInfo.url}/:type`} component={BoardDetail}/> */}
-        <div className="clearfix mb-2">
-          {this.state.writeButton}
+        <div className="clearfix content-btn-top mb-2">
+         <CategorySeletctList location={this.props.location} categoryGroups={this.props.categoryGroups} isDisabled={true} groupType={this.props.groupType}/> 
+         {this.state.writeButton}
           {/* <button type="button" className="btn btn-dark btn-sm btn-fr">
             <Link to={`${this.props.pathInfo.url}?groupType=${this.state.groupType}#write`} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link>
           </button> */}
         </div>
-        <div className="card">
+        <div className="card" style={{boxShadow: 'unset'}}>
           {this.state.contentEl}
           {/* <Table striped bordered hover size="sm">
             <colgroup>

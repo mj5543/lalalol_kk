@@ -76,7 +76,7 @@ const code6 = `render(){
   )
 }`;
   return (
-    <div style={containerStyle} className="overflow-auto">
+    <div style={{padding: '20px'}} className="container">
       <div dangerouslySetInnerHTML ={{__html: html}} />
       <p><strong>기본적인 이벤트 사용</strong></p>
       <Code code={code1} language="javascript" />

@@ -55,7 +55,7 @@ router.post('/api/posts/regist', function(request, response) {
   // });
   let now = new Date();
   // let sql = 'INSERT INTO posts (name, email, password, subject, content, ip, created_at) VALUES (?, ?, ?, ?, ?, inet_aton(?), ?)';
-  let sql = 'INSERT INTO posts (name, email, password, subject, content, created_at, group_type) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  let sql = 'INSERT INTO posts (name, email, password, subject, content, created_at, group_type, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
   const content = `${data.content}`;
   const bindParam = [
     data.name, 
@@ -64,7 +64,8 @@ router.post('/api/posts/regist', function(request, response) {
     data.subject,
     content,
     now,
-    data.groupType
+    data.groupType,
+    data.image
   ];
   // const content = `<p style="text-align:start;"><span style="color: rgb(81,81,81);background-color: rgb(255,255,255);font-size: 16px;font-family: Noto Sans KR", "PT Serif", Georgia, "Times New Roman", serif;">axios에서 
   // 추가 데이터를 보내는 방법에는 data와 params가 있다. data는 post요청을 보낼 때 사용되는 객체이며, params는 위의 예시처럼 url에 포함되는 데이터를 넣어주는 것이다.</span> <span style="color: rgb(81,81,81);background-color: rgb(255,255,255);font-size: 16px;font-family: Noto Sans KR", "PT Serif", Georgia, "Times New Roman", serif;"><strong>주의해야 할 점은, 서버에서는 req.params를 사용하면 예상된 변수(?)값을 받아오는 의미이지만, axios에 
@@ -129,12 +130,11 @@ router.post('/api/posts/update', upload.single('file'), function(request, respon
   // let sql = 'INSERT INTO posts (name, email, password, subject, content, ip, created_at) VALUES (?, ?, ?, ?, ?, inet_aton(?), ?)';
   let sql = 'UPDATE posts SET email = ?, name = ?, subject =?, content = ?, updated_at = ?, ip = ?, image = ? WHERE id = ?';
   const content = `${data.content}`;
-  let image = null;
-  console.log('request.file', request.file);
-  // const ext = path.extname(request.file.originalname);
-  if(request.file) {
-    image = `${request.file.filename}`;
-  }
+  // let image = null;
+  // console.log('request.file', request.file);
+  // if(request.file) {
+  //   image = `${request.file.filename}`;
+  // }
   // if(data.file) {
   //   image = `/image/${request.file.filename}`;
   // }
@@ -145,7 +145,7 @@ router.post('/api/posts/update', upload.single('file'), function(request, respon
     content,
     now,
     data.ip,
-    image,
+    data.image,
     data.id,
   ];
   console.log('bindParam', bindParam);

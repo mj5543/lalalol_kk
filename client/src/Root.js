@@ -19,5 +19,6 @@ const Root = () => {
       </BrowserRouter>
     </Provider>
 )};
-
+store.subscribe(Root);
+Root();
 export default Root;

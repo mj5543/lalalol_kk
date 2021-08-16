@@ -5,7 +5,6 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "./scss/app.scss";
 import "./css/icons.css";
 import "./css/base.css";
-import Sidebar from './components/navs/Sidebar';
 import NavbarExpandTop from './components/navs/NavbarExpandTop';
 import { Route, useLocation } from 'react-router-dom';
 import { Switch } from 'react-router-dom/cjs/react-router-dom.min';
@@ -19,12 +18,14 @@ import Resume from './components/resume/Resume';
 import ContentsContainer from './components/contents/ContentsContainer';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AdminContainer from './components/admin/AdminContainer';
+import SidebarContainer from './components/navs/SidebarContainer';
 
 const App = (props) => {
   console.log('App props', props);
   return (
     <div className="wrapper">
-      <Sidebar />
+      <SidebarContainer store={props.store} />
         <div className="main">
         <NavbarExpandTop />
         <Route exact path="/" component={ContentsContainer}/>
@@ -47,6 +48,7 @@ const App = (props) => {
         <Route path="/react/lifecycle" component={LifeCycle}/>
         <Route path="/react/event" component={ReactEvent}/>
         <Route path="/react/intro" component={Intro}/>
+        <Route path="/admin" component={AdminContainer}/>
         {/* <Route path="*">
           <NoMatch />
         </Route> */}
@@ -56,7 +58,7 @@ const App = (props) => {
           position="bottom-center"
           hideProgressBar={false}
           autoClose={1500} />
-          <footer className="footer">
+          {/* <footer className="footer">
             <div className="container-fluid">
               <div className="row text-muted">
                 <div className="col-6 text-start">
@@ -82,7 +84,7 @@ const App = (props) => {
                 </div>
               </div>
             </div>
-          </footer>
+          </footer> */}
         </div>
       </div>
 

@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+@font-face {
+  font-family: "NanumR";       
+  src: url("./font/NanumBarunpenR.ttf");
+}
+@font-face {
+  font-family: "NanumB";       
+  src: url("./font/NanumBarunpenB.ttf");
+}
+@font-face {
+  font-family: "GothicL";       
+  src: url("./font/NanumBarunGothicLight.ttf");
+}
+@font-face {
+  font-family: "GothicB";       
+  src: url("./font/NanumBarunGothicBold.ttf");
+}
+@font-face {
+  font-family: 'STIX Two Text', serif;      
+  src: url("https://fonts.googleapis.com/css2?family=STIX+Two+Text&display=swap");
+}

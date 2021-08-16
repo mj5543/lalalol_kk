@@ -32,7 +32,7 @@ class ToastUIEditor extends Component {
     this.editorRef.current.getInstance().setHTML(html);
   }
   onChanged() {
-    this.props.onTemperatureChange(`${this.editorRef.current.getInstance().getHTML()}`);
+    this.props.onTemperatureChange({content: `${this.editorRef.current.getInstance().getHTML()}`});
   }
  
 

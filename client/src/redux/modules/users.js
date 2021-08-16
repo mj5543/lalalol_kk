@@ -11,6 +11,7 @@ const SET_USER_INFO = "SET_USER_INFO";
 const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 const LOGOUT = "LOGOUT";
 const GET_LOCATION_IP = "GET_LOCATION_IP";
+const SET_CATEGORY_GROUP = "SET_CATEGORY_GROUP";
 
 // action creators
 
@@ -40,6 +41,12 @@ const setIpInfo = (info) => {
   return {
     type: GET_LOCATION_IP,
     ipInfo: info
+  }
+}
+const setCaterotyGroups = (data) => {
+  return {
+    type: SET_CATEGORY_GROUP,
+    categoryGroups: data
   }
 }
 
@@ -80,7 +87,14 @@ const logout = () => ({
 
 // Initial State
 
-const initialState = {logged: false, userInfo: {}, ipInfo: {}, provideInfo: {}};
+const initialState = {
+  logged: false, 
+  isMasterUser: false,
+  userInfo: {},
+  ipInfo: {},
+  provideInfo: {},
+  categoryGroups: {}
+};
 
 // Reducer
 
@@ -94,8 +108,10 @@ function reducer(state = initialState, action) {
       return userLogout(state, action);
     case GET_LOCATION_IP:
       return applyIpInfo(state, action);
-      default:
-      return state;
+    case SET_CATEGORY_GROUP:
+      return applyCategoryGroups(state, action);
+    default:
+    return state;
   }
 }
 
@@ -113,6 +129,7 @@ function applyUserInfo(state, action) {
   return {
     ...state,
     logged: true,
+    isMasterUser: userInfo.grade === 'MASTER',
     userInfo
   };
 }
@@ -129,17 +146,26 @@ function userLogout(state, action) {
   return {
     ...state,
     logged: false,
+    isMasterUser: false,
     userInfo: {}
   };
 }
+function applyCategoryGroups(state, action) {
+  const { categoryGroups } = action;
+  return {
+    ...state,
+    categoryGroups
+  };
 
+}
 // Exports
 
 const actionCreators = {
   getProvideUserCheck,
   setUserInfo,
   logout,
-  getIpInfo
+  getIpInfo,
+  setCaterotyGroups,
 };
 
 export { actionCreators };

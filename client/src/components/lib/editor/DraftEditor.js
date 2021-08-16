@@ -28,7 +28,8 @@ class DraftEditor extends Component {
       editorState: editorState,
       content: '',
       editContent: '',
-      tempFileType: ''
+      tempFileType: '',
+      tempImageUrl: '',
     };
     this.handleChange = this.handleChange.bind(this);
     // this.uploadImageCallBack = this.uploadImageCallBack(this);
@@ -41,7 +42,7 @@ class DraftEditor extends Component {
     console.log('prevProps ', prevProps);
   }
   handleChange(e) {
-    this.props.onTemperatureChange(`${e}`);
+    this.props.onTemperatureChange({content: `${e}`, image: this.state.tempImageUrl});
   }
   calcState(value) {
     if (value) {
@@ -119,7 +120,8 @@ class DraftEditor extends Component {
   uploadImageCallBack = (file) => {
     console.log('file---', file)
     this.setState({
-      tempFileType: file.type
+      tempFileType: file.type,
+      tempImageUrl: file.name
     }) 
     const awsconfig = {
       bucketName: process.env.REACT_APP_S3_BUCKET_NAME,

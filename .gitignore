@@ -17,6 +17,7 @@
 # production
 /client/src/components
 /client/src/components/*.css
+/client/src/font
 # /client/build
 # /db.js
 /client/public/upload
