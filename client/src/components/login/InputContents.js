@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import GoogleLoginBtn from './GoogleLoginBtn';
+import FaceBookLoginBtn from './FaceBookLoginBtn.';
 import {isEmpty} from 'lodash';
 // import InputWithLabel from '../components/auth/InputWithLabel';
 // import * as authActions from '../redux/modules/auth';
@@ -42,7 +43,7 @@ const InputContents = (props) => {
 		const res = await axios.post('/api/userCheck', params);
 		console.log('res--', res);
 		if(isEmpty(res.data.result)) {
-			props.history.push("/sign-up", params);
+			props.history.push("/auth/sign-up", params);
 		} else {
       // setUserInfo(res.data.result[0])
 			// props.userCheck(params)
@@ -182,8 +183,9 @@ const InputContents = (props) => {
 											</label>
 										</div> */}
 										<div className="text-center mt-3">
-											<button type="button" className="btn btn-lg btn-primary" onClick={userEmailPassCheck}>Sign in</button>
+											<button type="button" className="btn btn-lg btn-primary mr-15" onClick={userEmailPassCheck}>Sign in</button>
 											<GoogleLoginBtn onGoogleLogin={provideUserCheck} history={props.history} location={props.location} />
+											<FaceBookLoginBtn onFacebookLogin={provideUserCheck} history={props.history} location={props.location} />
 										</div>
 									</form>
 								</div>

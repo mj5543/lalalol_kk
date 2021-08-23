@@ -2,11 +2,17 @@ require('dotenv').config();
 const mysql = require('mysql');
 let db;
 if (process.env.NODE_ENV === "production") {
+  // db = mysql.createPool({
+  //   host : process.env.DATABASE_HOST,
+  //   user : process.env.DATABASE_USER,
+  //   password : process.env.DATABASE_PASSWORD,
+  //   database : process.env.DATABASE
+  // });
   db = mysql.createPool({
-    host : process.env.DATABASE_HOST,
-    user : process.env.DATABASE_USER,
-    password : process.env.DATABASE_PASSWORD,
-    database : process.env.DATABASE
+    host : process.env.AWS_DATABASE_HOST,
+    user : process.env.AWS_DATABASE_USER,
+    password : process.env.AWS_DATABASE_PASSWORD,
+    database : process.env.AWS_DATABASE
   });
 
 } else {

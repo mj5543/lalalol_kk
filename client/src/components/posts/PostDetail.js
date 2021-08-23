@@ -188,7 +188,8 @@ class PostDetail extends Component {
     toast.success('저장되었습니다.')
     console.log('complete!');
     const {history} = this.props;
-    history.push(`${this.props.matchUrl}?groupType=${this.state.groupType}`);
+    history.push({pathname: this.props.matchUrl, search: `?groupType=${this.state.groupType}`, state: this.props.location.state});
+    // history.push(`${this.props.matchUrl}?groupType=${this.state.groupType}`);
   }
   async _updateContent() {
     // const params = {

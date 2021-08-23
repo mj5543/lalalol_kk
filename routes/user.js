@@ -3,7 +3,7 @@ const router = express.Router()
 // const fs = require('fs')
 // const ejs = require('ejs')
 const connection = require('../db');
-
+const crypto = require('crypto');
 
 router.use(express.json()); 
 router.use(express.urlencoded({ extended: false }))
@@ -34,6 +34,58 @@ router.post('/api/userEmailPassCheck', function(request, response) {
       response.send({ result : results });
     }
   });
+
+  // const salt = crypto.randomBytes(32).toString('base64');
+  // console.log('salt :: ', salt);
+  // crypto.randomBytes(64, (err, buf) => {
+  //   //salt는 생성하는 해시값 이외에 추가적인 암호화 값
+  //     const salt = buf.toString('base64');
+  //     console.log('salt :: ', salt);
+  //     //crypto.pbkdf2의 salt 뒤 숫자 파라미터는 임의의 값으로 주어준다.
+  //     crypto.pbkdf2(userpassword, salt, 1203947, 64, 'sha512', (err, key) => {
+  //         console.log('password :: ', key.toString('base64')); 
+  //         connection.query('SELECT * FROM users WHERE password = ? AND email = ?', [userpassword, email], function(error, results, fields) {
+  //           if (error) {
+  //             response.status(500);
+  //             response.render('error', { error: err });
+  //           } else {
+  //             response.send({ result : results });
+  //           }
+  //         });
+  //     });
+  // });
+});
+router.post('/api/user-password-change', function(request, response) {
+  console.log('request.body', request.body);
+  console.log('rresponse', response);
+  const userpassword = request.body.password;
+  const email = request.body.email;
+  connection.query('UPDATE users SET password = ?, password_s = ? WHERE email = ?', [userpassword, userpassword, email],
+  function(error, results, fields) {
+    if (error) {
+      response.status(500);
+      response.render('error', { error: err });
+    } else {
+      response.send({ result : results });
+    }
+  });
+
+  // crypto.randomBytes(64, (err, buf) => {
+  //     const salt = buf.toString('base64');
+  //     console.log('salt :: ', salt);
+  //     crypto.pbkdf2(userpassword, salt, 1203947, 64, 'sha512', (err, key) => {
+  //         console.log('password :: ', key.toString('base64')); // 'dWhPkH6c4X1Y71A/DrAHhML3DyKQdEkUOIaSmYCI7xZkD5bLZhPF0dOSs2YZA/Y4B8XNfWd3DHIqR5234RtHzw=='
+  //         connection.query('UPDATE users SET password = ?, password_s = ? WHERE email = ?', [key.toString('base64'), salt, email],
+  //         function(error, results, fields) {
+  //           if (error) {
+  //             response.status(500);
+  //             response.render('error', { error: err });
+  //           } else {
+  //             response.send({ result : results });
+  //           }
+  //         });
+  //     });
+  //   });
 });
 router.post('/api/updateLoggedinUser', function(request, response) {
   // const {name, password, email, appId, provider} = request.body;

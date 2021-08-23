@@ -20,6 +20,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AdminContainer from './components/admin/AdminContainer';
 import SidebarContainer from './components/navs/SidebarContainer';
+import Testing from './pages/Testing';
 
 const App = (props) => {
   console.log('App props', props);
@@ -49,6 +50,7 @@ const App = (props) => {
         <Route path="/react/event" component={ReactEvent}/>
         <Route path="/react/intro" component={Intro}/>
         <Route path="/admin" component={AdminContainer}/>
+        <Route path="/testing" component={Testing}/>
         {/* <Route path="*">
           <NoMatch />
         </Route> */}

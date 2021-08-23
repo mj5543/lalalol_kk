@@ -15,8 +15,14 @@ app.get("/api/greeting", (req, res) => {
 app.use(userRouter);
 app.use(postsRouter);
 app.use(adminRouter);
-
-app.get("/", (req, res) => {
+// app.render()
+// app.get('/user/:id', (req, res) => {
+//   return app.render(req, res, '/user', { id: req.params.id });
+// });
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "client/build", "index.html"));
+// });
+app.get('*', (req, res)=> {
   res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
 

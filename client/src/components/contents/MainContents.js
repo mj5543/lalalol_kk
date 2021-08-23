@@ -146,7 +146,7 @@ class MainContents extends Component {
                 </Card.Body>
                 <div style={{padding: '10px'}}>
                 <button type="button" className="btn btn-outline-secondary btn-sm btn-br mr-10">
-                  <Link to={{pathname:`/posts/detail`, search: `?id=${data.id}&groupType=${data.group_type}`}} className="btn-text-s">read more</Link>
+                  <Link to={{pathname:`/posts/detail`, search: `?id=${data.id}&groupType=${data.group_type}`, state: {groupType: data.group_type}}} className="btn-text-s">read more</Link>
                 </button>
                 </div>
               </Card>

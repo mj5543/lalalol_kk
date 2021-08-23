@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import DataTable from "react-data-table-component";
 import {isEmpty} from 'lodash';
 import ThumbnailList from './ThumbnailList';
 import CategorySeletctList from './CategorySeletctList';
+import DataTableComponent from '../lib/dataDisplay/DataTableCompoenet';
 class PostList extends Component {
   constructor(props) {
     console.log('props--', props);
@@ -55,12 +55,12 @@ class PostList extends Component {
       return;
     }
     let btnEl = ''
-    if (this.props.groupType !== 'GEUST' && this.props.userInfo.grade === 'MASTER') {
+    if (this.props.groupType !== 'GUEST' && this.props.userInfo.grade === 'MASTER') {
       btnEl =  <button type="button" className="btn btn-dark btn-sm btn-fr mt-20">
               <Link to={{pathname:`${this.props.pathInfo.url}/detail`, search: `?groupType=${this.props.groupType}`, state: this.props.location.state, hash:'#write'}} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link>
               {/* <Link to={`${this.props.pathInfo.url}?groupType=${this.props.groupType}#write`} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link> */}
               </button>
-    } else if (this.props.groupType === 'GEUST') {
+    } else if (this.props.groupType === 'GUEST') {
       btnEl =  <button type="button" className="btn btn-dark btn-sm btn-fr mt-20">
               <Link to={{pathname:`${this.props.pathInfo.url}/detail`, search: `?groupType=${this.props.groupType}`, state: this.props.location.state, hash:'#write'}} className="text-white" style={{textDecoration: 'none'}}>글쓰기</Link>
               </button>
@@ -129,19 +129,7 @@ class PostList extends Component {
     if(this.props.groupType === 'GALLERY') {
       contentEl = <ThumbnailList dataList={this.state.dataList} />
     } else {
-      contentEl = <DataTable
-      columns={this.state.columns}
-      data={this.state.dataList}
-      responsive={true}
-      // customTheme={this.darkTheme()}
-      customStyles={this.customStyles()}
-      defaultSortAsc={false}
-      pagination
-      paginationPerPage={15}
-      highlightOnHover
-      noDataComponent="등록된 글이 없습니다."
-      progressPending={this.state.isLoading}
-    />
+      contentEl = <DataTableComponent columns={this.state.columns} dataList={this.state.dataList} isLoading={this.state.isLoading} isSelectable={false} />
     }
     this.setState({
       contentEl: contentEl
@@ -197,60 +185,7 @@ class PostList extends Component {
     }
     console.log('password--', this.state.password);
   }
-  customStyles = () => {
-    return {
-      rows: {
-        style: {
-          minHeight: '35px', // override the row height
-        }
-      },
-      headCells: {
-        style: {
-          minHeight: '40px', // override the row height
-          paddingLeft: '8px', // override the cell padding for head cells
-          paddingRight: '8px',
-          fontSize: '13px',
-          fontWeight: 'bold',
-          lineHeight: '30px'
-        },
-      },
-      cells: {
-        style: {
-          paddingLeft: '3px', // override the cell padding for data cells
-          paddingRight: '3px',
-        },
-      },
-    };
-  }
-  darkTheme = () => {
-    return {
-      title: {
-        fontSize: '22px',
-        fontColor: '#FFFFFF',
-        backgroundColor: '#363640',
-      },
-      contextMenu: {
-        backgroundColor: '#E91E63',
-        fontColor: '#FFFFFF',
-      },
-      header: {
-        fontSize: '12px',
-        fontColor: '#FFFFFF',
-        backgroundColor: '#363640',
-      },
-      rows: {
-        fontColor: '#FFFFFF',
-        backgroundColor: '#363640',
-        borderColor: 'rgba(255, 255, 255, .12)',
-        hoverFontColor: 'black',
-        hoverBackgroundColor: 'rgba(0, 0, 0, .24)',
-      },
-      cells: {
-        cellPadding: '5px',
-      },
-    }
 
-  }
   render() {
     return (
       <div>
