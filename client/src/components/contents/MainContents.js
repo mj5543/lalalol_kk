@@ -93,7 +93,8 @@ class MainContents extends Component {
         dataList: dataList
       })
     } catch(e) {
-      this._getDataList();
+      console.log('_getList error--', e);
+      // this._getDataList();
     }
   }
  
