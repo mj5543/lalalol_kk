@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express()
+require('dotenv').config();
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client/build")));
@@ -8,8 +9,14 @@ if (process.env.NODE_ENV === "production") {
 const userRouter = require('./routes/user.js')
 const postsRouter = require('./routes/posts.js')
 const adminRouter = require('./routes/admin.js')
-app.get("/api/greeting", (req, res) => {
-  res.send("Hello World!");
+app.get("/api/fileconfig", (req, res) => {
+  const config = {
+    bucketName: process.env.S3_BUCKET_NAME,
+    region: process.env.AWS_REGION,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  }
+  res.send(config);
 });
 
 app.use(userRouter);

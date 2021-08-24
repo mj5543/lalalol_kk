@@ -31,12 +31,21 @@ class DraftEditor extends Component {
       editContent: '',
       tempFileType: '',
       tempImageUrl: '',
+      fileConfig: {
+        bucketName: process.env.REACT_APP_S3_BUCKET_NAME,
+        region: process.env.REACT_APP_AWS_REGION,
+        accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+      }
     };
     this.handleChange = this.handleChange.bind(this);
     // this.uploadImageCallBack = this.uploadImageCallBack(this);
   }
   componentDidMount() {
     this.calcState(this.props.editContent);
+    if (process.env.NODE_ENV === "production") {
+      this._getConfig();
+    }
   }
   componentDidUpdate(prevProps, prevState) {
     console.log('prevState ', prevState);
@@ -84,6 +93,12 @@ class DraftEditor extends Component {
       editorState: insertedEditorState
     });
   }
+  _getConfig = async() => {
+    const res = await axios.get(`/api/fileconfig`);
+    this.setState({
+      fileConfig: res
+    }) 
+}
   _getData = async() => {
     const res = await axios.get(`/api/posts/detail?id=${this.props.postId}`);
     console.log('/api/posts/detail', res)
@@ -124,24 +139,25 @@ class DraftEditor extends Component {
       tempFileType: file.type,
       tempImageUrl: file.name
     }) 
-    let awsconfig;
-    if (process.env.NODE_ENV === "production") {
-      awsconfig = {
-        bucketName: process.env.S3_BUCKET_NAME,
-        region: process.env.AWS_REGION,
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      }
-    } else {
-      awsconfig = {
-        bucketName: process.env.REACT_APP_S3_BUCKET_NAME,
-        region: process.env.REACT_APP_AWS_REGION,
-        accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-      }
-    }
+    // let awsconfig;
+    // if (process.env.NODE_ENV === "production") {
+    //   awsconfig = {
+    //     bucketName: process.env.S3_BUCKET_NAME,
+    //     region: process.env.AWS_REGION,
+    //     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    //     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    //   }
+    // } else {
+    //   awsconfig = {
+    //     bucketName: process.env.REACT_APP_S3_BUCKET_NAME,
+    //     region: process.env.REACT_APP_AWS_REGION,
+    //     accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+    //     secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+    //   }
+    // }
     
     // this.insertImageBlock()
+    const awsconfig = this.state.fileConfig;
     return new Promise((resolve, reject) => {
       console.log('resolve file---', file);
       uploadFile(file, awsconfig)
