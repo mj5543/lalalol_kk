@@ -293,15 +293,15 @@ router.post('/api/posts/comment-regist', function(request, response) {
   console.log('params', request.params);
   console.log('query', request.query);
   const data = request.body;
-  let sql = 'INSERT INTO post_comment (post_id, writer_id, content, created_at, ip) VALUES (?, ?, ?, ?, ?)';
+  let sql = 'INSERT INTO post_comment (post_id, writer_id, content, ip) VALUES (?, ?, ?, ?)';
   const content = `${data.content}`;
   const bindParam = [
     data.postId,
     data.userId,
     content,
-    data.now,
     data.ip,
   ];
+  console.log('bindParam---', bindParam);
   const commentCntSql = 'UPDATE posts SET comment_cnt = comment_cnt+1 where id = ?'
   connection.query(sql, bindParam, (err, results, fields) => {
     if (err) {
