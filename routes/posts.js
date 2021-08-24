@@ -184,8 +184,8 @@ router.get('/api/posts/list', function(request, response) {
 });
 router.get('/api/posts/list-members-preview', function(request, response) {
   // let sql = 'SELECT * FROM posts ORDER BY id DESC LIMIT 10';
-  let sql = 'SELECT * FROM posts WHERE group_type NOT IN (?) ORDER BY id DESC LIMIT 12';
-  connection.query(sql, ['GALLERY'], (err, data, fields) => {
+  let sql = 'SELECT * FROM posts WHERE group_type NOT IN (?,?) ORDER BY id DESC LIMIT 12';
+  connection.query(sql, ['GALLERY', 'MASTER'], (err, data, fields) => {
     if (err) { 
       res.status(500);
       res.render('error', { error: err });
@@ -276,6 +276,55 @@ router.get('/api/posts/detail', (req, res) => {
  
   })
 })
+router.get('/api/posts/comment-list', (req, res) => {
+  connection.query("SELECT * FROM post_comment WHERE post_id = ?", [req.query.id], (err, data) => {
+    if (err) {
+      res.status(500);
+      res.render('error', { error: err });
+      res.send({ error : err });
+    } else {
+      res.send({ result : data });
+    }
+ 
+  })
+});
+router.post('/api/posts/comment-regist', function(request, response) {
+  console.log('params', request.params);
+  console.log('query', request.query);
+  const data = request.body;
+  let sql = 'INSERT INTO post_comment (post_id, writer_id, content, created_at, ip) VALUES (?, ?, ?, ?, ?)';
+  const content = `${data.content}`;
+  const bindParam = [
+    data.postId,
+    data.userId,
+    content,
+    data.now,
+    data.ip,
+  ];
+  const commentCntSql = 'UPDATE posts SET comment_cnt = comment_cnt+1 where id = ?'
+  connection.query(sql, bindParam, (err, results, fields) => {
+    if (err) {
+      res.status(500);
+      res.render('error', { error: err });
+      res.send({ error : err });
+      throw new Error(err); 
+    } else { 
+      connection.query(commentCntSql, [data.postId], (err, results, fields) => {
+        if (err) {
+          res.status(500);
+          res.render('error', { error: err });
+          res.send({ error : err });
+          throw new Error(err); 
+        } else { 
+          response.send(JSON.parse(JSON.stringify(results))); 
+        }
+      });    
+      response.send(JSON.parse(JSON.stringify(results))); 
+    }
+  });
+});
+
+
 router.delete('/api/posts/delete', (req, res) => {
   console.log('params', req.params);
   console.log('query', req.query);

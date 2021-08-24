@@ -9,6 +9,7 @@ import PrismCode from '../code/PrismCode';
 import "prismjs/themes/prism-tomorrow.css";
 import PrismDecorator from "draft-js-prism";
 // const PrismDecorator = require('draft-js-prism');
+require('dotenv').config();
 
 const Prism = require('prismjs')
 // import {isEmpty} from 'lodash';

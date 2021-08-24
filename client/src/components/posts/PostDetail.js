@@ -11,6 +11,7 @@ import ToastUIEditor from '../lib/editor/ToastUIEditor';
 import * as userActions from "../../redux/modules/users";
 import { toast } from "react-toastify";
 import CategorySeletctList from './CategorySeletctList';
+import Comments from './Comments';
 
 class PostDetail extends Component {
   constructor(props) {
@@ -261,6 +262,7 @@ class PostDetail extends Component {
       contentElement = <div>
         <div style={{marginBottom: '20px'}}><h2>{this.state.title}</h2></div>
         <div dangerouslySetInnerHTML={ {__html: this.state.content} }></div>
+        <Comments ip={this.props.ipInfo.IPv4} userInfo={this.props.userInfo} postId={this.props.postId} />
         </div>;
     }
     return (

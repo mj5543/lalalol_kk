@@ -9,6 +9,9 @@ import storage from '../lib/storage';
 // import {mapStateToProps, mapDispatchToProps} from '../../redux/connectMapProps';
 // import { withRouter } from "react-router-dom";
 // import { connect } from 'react-redux';
+require('dotenv').config();
+const crypto = require('crypto');
+const solt = process.env.REACT_APP_HIDDEN_KEY;
 
 const InputContents = (props) => {
   console.log('props', props);
@@ -61,7 +64,10 @@ const InputContents = (props) => {
 	}
 	const userEmailPassCheck = async() => {
 		try {
-			const res = await axios.post('/api/userEmailPassCheck', {password: inputs.password, email: inputs.email});
+      const cipher = crypto.createCipher('aes192', solt);
+      cipher.update(inputs.password, 'utf8', 'base64'); // javascript는 utf-8 라고 안 씀
+      const outPass = cipher.final('base64');
+			const res = await axios.post('/api/userEmailPassCheck', {password: outPass, email: inputs.email});
 			console.log('res--', res);
 			if(!isEmpty(res.data.result)) {
 				storage.set('loggedInfo', res.data.result[0]);
@@ -183,7 +189,9 @@ const InputContents = (props) => {
 											</label>
 										</div> */}
 										<div className="text-center mt-3">
-											<button type="button" className="btn btn-lg btn-primary mr-15" onClick={userEmailPassCheck}>Sign in</button>
+											<button type="button" className="btn btn-md" onClick={userEmailPassCheck}>
+												<div className="login-password-icon" style={{width: '60px', height: '60px'}}></div>
+											</button>
 											<GoogleLoginBtn onGoogleLogin={provideUserCheck} history={props.history} location={props.location} />
 											<FaceBookLoginBtn onFacebookLogin={provideUserCheck} history={props.history} location={props.location} />
 										</div>

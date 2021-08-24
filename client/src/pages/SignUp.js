@@ -9,6 +9,10 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
 
+const crypto = require('crypto');
+require('dotenv').config();
+const solt = process.env.REACT_APP_HIDDEN_KEY;
+
 const SignUp = (props) => {
   console.log('props.', props);
   // const [name, setName] = useState('');
@@ -178,7 +182,10 @@ const SignUp = (props) => {
 	}	
 	const doSignUp = async()=> {
 		try {
-			const reqParams = {name, password, email, appId, provider, ip:props.ipInfo.IPv4}
+      const cipher = crypto.createCipher('aes192', solt);
+      cipher.update(inputs.password, 'utf8', 'base64');
+      const outPass = cipher.final('base64');
+			const reqParams = {name, password: outPass, email, appId, provider, ip:props.ipInfo.IPv4}
 			const res = await axios.post('/api/signup', reqParams);
 			toast.success('가입에 성공하였습니다. 로그인을 해주세요.')
 			props.history.push("/auth/login");
