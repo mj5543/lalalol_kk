@@ -277,7 +277,8 @@ router.get('/api/posts/detail', (req, res) => {
   })
 })
 router.get('/api/posts/comment-list', (req, res) => {
-  connection.query("SELECT * FROM post_comment WHERE post_id = ?", [req.query.id], (err, data) => {
+  const sql = 'select *, (select username from users where id = pp.writer_id) as userName, (select app_image_url from users where id = pp.writer_id) as userImage from post_comment pp where post_id = ?'
+  connection.query(sql, [req.query.id], (err, data) => {
     if (err) {
       res.status(500);
       res.render('error', { error: err });

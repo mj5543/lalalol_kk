@@ -23,6 +23,7 @@ class PostDetail extends Component {
       file: null,
       image: '',
       email: '',
+      commentCnt: 0,
       editContent: '',
       mode: 'read',
       saveButtonText: '수정',
@@ -91,6 +92,7 @@ class PostDetail extends Component {
         id: res.data.result[0].id,
         image: res.data.result[0].image,
         email: res.data.result[0].email,
+        commentCnt: res.data.result[0].comment_cnt,
         updateBtnEl: updateBtnEl,
         deleteBtnEl: deleteBtnEl,
       }) 
@@ -262,7 +264,8 @@ class PostDetail extends Component {
       contentElement = <div>
         <div style={{marginBottom: '20px'}}><h2>{this.state.title}</h2></div>
         <div dangerouslySetInnerHTML={ {__html: this.state.content} }></div>
-        <Comments ip={this.props.ipInfo.IPv4} userInfo={this.props.userInfo} postId={this.props.postId} />
+        댓글 {this.state.commentCnt}
+        <Comments ip={this.props.ipInfo.IPv4} userInfo={this.props.userInfo} postId={this.props.postId} commentCnt={this.state.commentCnt} />
         </div>;
     }
     return (
