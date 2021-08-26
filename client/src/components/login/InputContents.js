@@ -3,12 +3,9 @@ import axios from 'axios';
 import GoogleLoginBtn from './GoogleLoginBtn';
 import FaceBookLoginBtn from './FaceBookLoginBtn.';
 import {isEmpty} from 'lodash';
-// import InputWithLabel from '../components/auth/InputWithLabel';
-// import * as authActions from '../redux/modules/auth';
 import storage from '../lib/storage';
-// import {mapStateToProps, mapDispatchToProps} from '../../redux/connectMapProps';
-// import { withRouter } from "react-router-dom";
-// import { connect } from 'react-redux';
+import '../animation/NightBackground.css';
+
 require('dotenv').config();
 const crypto = require('crypto');
 const solt = process.env.REACT_APP_HIDDEN_KEY;
@@ -140,27 +137,30 @@ const InputContents = (props) => {
 	// const { email, password } = this.props.form.toJS();
 	// const { handleChange } = this;
   return (
-    <main className="d-flex w-100">
+    <main className="d-flex w-100" style={{backgroundColor: '#000000'}}>
+<div id='stars'></div>
+<div id='stars2'></div>
+<div id='stars3'></div>		
 		<div className="container d-flex flex-column">
 			<div className="row vh-100">
 				<div className="col-sm-10 col-md-8 col-lg-5 mx-auto d-table h-100">
 					<div className="d-table-cell align-middle">
 
 						<div className="text-center mt-4">
-							<h1 className="h2">Welcome back</h1>
-							<p className="lead">
+							<h1 className="h2 text-white">Welcome back</h1>
+							<p className="lead text-white">
 								Sign in to your account to continue
 							</p>
 						</div>
 
-						<div className="card">
+						<div className="card" style={{border: '1px solid #ffd2d2', backgroundColor: '#000000'}}>
 							<div className="card-body">
 								<div className="m-sm-4">
 									<div className="text-center">
 										{/* <img src="img/avatars/avatar.jpg" alt="Charles Hall" className="img-fluid rounded-circle" width="132" height="132" /> */}
 									</div>
 									<div className="wp-100" style={{margin: '0 0 1.5rem 0', display: '-webkit-inline-box'}}>
-										<div className="d-inline-bolck" style={{width: '49%'}}>
+										<div className="d-inline-bolck" style={{width: '49%', marginRight: '5px'}}>
 											<GoogleLoginBtn onGoogleLogin={provideUserCheck} history={props.history} location={props.location} />
 										</div>
 										<div className="d-inline-bolck" style={{width: '49%'}}>
@@ -171,7 +171,7 @@ const InputContents = (props) => {
 									<form>
 										<div className="mb-3">
 											<label class="field field_v2 wp-100">
-												<input class="field__input"
+												<input class="field__input text-white"
 													placeholder="Enter your email"
 													type="email" name="email"
 													value={email}
@@ -190,7 +190,7 @@ const InputContents = (props) => {
 										</div>
 										<div className="mb-3">
 											<label class="field field_v2 wp-100">
-												<input class="field__input"
+												<input class="field__input text-white"
 													placeholder="Enter your password"
 													type="password" name="password"
 													value={password}
@@ -218,7 +218,7 @@ const InputContents = (props) => {
 												</span>
 											</label>
 										</div> */}
-										<div className="text-center mt-3">
+										<div className="text-center mt-5">
 											<button className="custom-btn btn-6 wp-100" onClick={userEmailPassCheck}>
 												<span>Login</span>
 												{/* <div className="login-password-icon" style={{width: '60px', height: '60px'}}></div> */}

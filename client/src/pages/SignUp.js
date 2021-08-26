@@ -9,6 +9,7 @@ import {mapStateToProps, mapDispatchToProps} from '../redux/connectMapProps';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 import { toast } from "react-toastify";
+import '../components/animation/NightBackground.css';
 
 const crypto = require('crypto');
 require('dotenv').config();
@@ -200,8 +201,8 @@ const SignUp = (props) => {
 		if(!isDisabled) {
 			elements = 
 			<div className="wp-100" style={{margin: '0 0 1.5rem 0', display: '-webkit-inline-box'}}>
-			<div className="d-inline-bolck" style={{width: '49%'}}>
-				<GoogleLoginBtn onGoogleLogin={setContents} />;
+			<div className="d-inline-bolck" style={{width: '49%', marginRight: '5px'}}>
+				<GoogleLoginBtn onGoogleLogin={setContents} />
 			</div>
 			<div className="d-inline-bolck" style={{width: '49%'}}>
 				<FaceBookLoginBtn onFacebookLogin={setContents} />
@@ -223,25 +224,26 @@ const SignUp = (props) => {
 		// console.log('handleChangedPassword', password);
 	}
   return (
-    <main className="d-flex w-100">
+    <main className="d-flex w-100" style={{backgroundColor: '#000000'}}>
+<div id='stars'></div>
+<div id='stars2'></div>
+<div id='stars3'></div>		
 		<div className="container d-flex flex-column">
 			<div className="row vh-100">
-				<div className="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+				<div className="col-sm-10 col-md-8 col-lg-5 mx-auto d-table h-100">
 					<div className="d-table-cell align-middle">
 						<IpAddress />
 						<div className="text-center mt-4">
-							<h1 className="h2">가입</h1>
+							<h1 className="h2 text-white">Sign up</h1>
 							<p className="lead">
 								{/* Start creating the best possible user experience for you customers. */}
 							</p>
 						</div>
 
-						<div className="card">
+						<div className="card" style={{border: '1px solid #ffd2d2', backgroundColor: '#000000'}}>
 							<div className="card-body">
 								<div className="m-sm-4">
-									<div className="wp-100" style={{margin: '0 0 1.5rem 0', display: '-webkit-inline-box'}}>
-										<ButtonElements />
-									</div>
+									<ButtonElements />
 									<form>
 										<div className="mb-1">
 											{/* <label className="form-label">Name</label>
@@ -254,7 +256,7 @@ const SignUp = (props) => {
 												onChange={onDateChange}
 											/> */}
 											<label className="field field_v2 wp-100">
-												<input className={'field__input' + (nameInvalid ? ' is-invalid' : '')}
+												<input className={'field__input text-white' + (nameInvalid ? ' is-invalid' : '')}
 													type="text"
 													value={name}
 													name="name"
@@ -278,7 +280,7 @@ const SignUp = (props) => {
 												onChange={onDateChange}
 											/> */}
 											<label className="field field_v2 wp-100">
-												<input className={'field__input' + (emailInvalid ? ' is-invalid' : '')}
+												<input className={'field__input text-white' + (emailInvalid ? ' is-invalid' : '')}
 													type="email" 
 													value={email} 
 													name="email" 
@@ -302,7 +304,7 @@ const SignUp = (props) => {
             						onChange={onDateChange}
 											/> */}
 											<label className="field field_v2 wp-100">
-											<input className={'field__input' + (passwordInvalid ? ' is-invalid' : '')}
+											<input className={'field__input text-white' + (passwordInvalid ? ' is-invalid' : '')}
 												type="password"
 												name="password"
 												placeholder="Enter password" 
@@ -315,7 +317,7 @@ const SignUp = (props) => {
 											</label>
 											<div className="invalid-message ml-10">{passwordMessage}</div>
 										</div>
-										<div className="text-center mt-3">
+										<div className="text-center mt-4">
 											<button type="button" className="custom-btn btn-6 wp-100" onClick={onSignUp}>Sign up</button>
 										</div>
 									</form>

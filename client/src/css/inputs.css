@@ -44,6 +44,8 @@ CORE STYLES
 }
 
 .field__input{
+  /* color:#fff; */
+  font-weight:bold;
   box-sizing: border-box;
   width: var(--fieldWidth, 100%);
   height: var(--fieldHeight, 3rem);
