@@ -228,8 +228,11 @@ class PostDetail extends Component {
     let editEl;
     if(this.state.groupType === 'GALLERY') {
       editEl = <DraftEditor
+      height="100vh"
       editContent={this.state.content}
       onTemperatureChange={this.changedContent}
+      toolbarHidden={false}
+      placeholder='내용을 입력해주세요'
     />
 
     } else {
@@ -264,8 +267,12 @@ class PostDetail extends Component {
       contentElement = <div>
         <div style={{marginBottom: '20px'}}><h2>{this.state.title}</h2></div>
         <div dangerouslySetInnerHTML={ {__html: this.state.content} }></div>
-        댓글 {this.state.commentCnt}
-        <Comments ip={this.props.ipInfo.IPv4} userInfo={this.props.userInfo} postId={this.props.postId} commentCnt={this.state.commentCnt} />
+        {/* 댓글 {this.state.commentCnt} */}
+        <Comments ip={this.props.ipInfo.IPv4}
+          userInfo={this.props.userInfo}
+          postId={this.props.postId}
+          logged={this.props.logged}
+          commentCnt={this.state.commentCnt} />
         </div>;
     }
     return (

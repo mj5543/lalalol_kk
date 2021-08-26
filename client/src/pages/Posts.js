@@ -20,7 +20,7 @@ const Posts = (props) => {
 
   return (
     <main className="content" style={{backgroundColor: '#fff'}}>
-      <div className="container p-0">
+      <div className="container p-0" style={{maxWidth: '960px'}}>
 
         {/* <h1 className="h3 mb-3">Post Page</h1> */}
 

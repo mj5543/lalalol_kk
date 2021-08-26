@@ -11,14 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-@font-face {
-  font-family: "NanumR";       
-  src: url("./font/NanumBarunpenR.ttf");
-}
-@font-face {
-  font-family: "NanumB";       
-  src: url("./font/NanumBarunpenB.ttf");
-}
+
 @font-face {
   font-family: "GothicL";       
   src: url("./font/NanumBarunGothicLight.ttf");

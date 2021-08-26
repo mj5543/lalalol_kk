@@ -9,21 +9,21 @@ import PrismCode from '../code/PrismCode';
 import "prismjs/themes/prism-tomorrow.css";
 import PrismDecorator from "draft-js-prism";
 // const PrismDecorator = require('draft-js-prism');
+import {isEmpty} from 'lodash';
 require('dotenv').config();
 
 const Prism = require('prismjs')
-// import {isEmpty} from 'lodash';
+const decorator = new PrismDecorator({
+  // Provide your own instance of PrismJS
+  prism: Prism,
+  defaultSyntax: "javascript",
+});
 
 class DraftEditor extends Component {
   constructor(props) {
-    console.log('BoardDetail props--', props);
-    const decorator = new PrismDecorator({
-      // Provide your own instance of PrismJS
-      prism: Prism,
-      defaultSyntax: "javascript",
-    });
-    const editorState = EditorState.createEmpty(decorator)
     super(props);
+    console.log('BoardDetail props--', props);
+    const editorState = EditorState.createEmpty(decorator)
     this.state  = {
       // editorState: EditorState.createEmpty(),
       editorState: editorState,
@@ -50,6 +50,14 @@ class DraftEditor extends Component {
   componentDidUpdate(prevProps, prevState) {
     console.log('prevState ', prevState);
     console.log('prevProps ', prevProps);
+    // if(isEmpty(prevProps.editContent)) {
+    //   // const editorState = EditorState.createEmpty(decorator)
+    //   const editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''));  
+    //   this.setState({
+    //     editorState
+    //   })
+
+    // }
   }
   handleChange(e) {
     this.props.onTemperatureChange({content: `${e}`, image: this.state.tempImageUrl});
@@ -187,12 +195,13 @@ class DraftEditor extends Component {
   }
   render(){
     return (
-      <div>
+      <div style={{height: this.props.height}}>
       <Editor
+        toolbarHidden={this.props.toolbarHidden}
         // 에디터와 툴바 모두에 적용되는 클래스
-        wrapperClassName="wrapper-class"
+        wrapperClassName="draft-wrapper"
         // 에디터 주변에 적용된 클래스
-        editorClassName="editor"
+        editorClassName="draft-editor"
         // 툴바 주위에 적용된 클래스
         toolbarClassName="toolbar-class"
         // 툴바 설정
@@ -216,7 +225,7 @@ class DraftEditor extends Component {
             },
           },
         }} 
-        placeholder="내용을 작성해주세요."
+        placeholder={this.props.placeholder}
         // 한국어 설정
         localization={{
           locale: 'ko',

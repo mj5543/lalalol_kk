@@ -22,7 +22,7 @@ export class ContentsDetail extends Component {
   }
 
   render() {
-    return <div className="content-container">{this.state.viewContent}</div>;
+    return <div>{this.state.viewContent}</div>;
   }
 }
 

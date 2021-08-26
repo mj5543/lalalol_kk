@@ -9,7 +9,7 @@ import Prism from 'prismjs';
 // import "prismjs/themes/prism-tomorrow.css";
 import './prism-tomorrow.css';
 
-// import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
+import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
  
 

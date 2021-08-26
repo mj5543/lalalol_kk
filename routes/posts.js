@@ -305,25 +305,69 @@ router.post('/api/posts/comment-regist', function(request, response) {
   const commentCntSql = 'UPDATE posts SET comment_cnt = comment_cnt+1 where id = ?'
   connection.query(sql, bindParam, (err, results, fields) => {
     if (err) {
-      res.status(500);
-      res.render('error', { error: err });
-      res.send({ error : err });
+      response.status(500);
+      response.render('error', { error: err });
+      response.send({ error : err });
       throw new Error(err); 
     } else { 
       connection.query(commentCntSql, [data.postId], (err, results, fields) => {
         if (err) {
-          res.status(500);
-          res.render('error', { error: err });
-          res.send({ error : err });
+          response.status(500);
+          response.render('error', { error: err });
+          response.send({ error : err });
           throw new Error(err); 
         } else { 
-          response.send(JSON.parse(JSON.stringify(results))); 
+          // response.send(JSON.parse(JSON.stringify(results))); 
         }
       });    
       response.send(JSON.parse(JSON.stringify(results))); 
     }
   });
 });
+router.post('/api/posts/comment-update', function(request, response) {
+  const data = request.body;
+  let sql = 'UPDATE post_comment SET content = ?, ip = ?, updated_at = ? where id = ?';
+  const content = `${data.content}`;
+  const bindParam = [
+    content,
+    data.ip,
+    data.now,
+    data.id,
+  ];
+  connection.query(sql, bindParam, (err, results, fields) => {
+    if (err) {
+      response.status(500);
+      response.render('error', { error: err });
+      response.send({ error : err });
+      throw new Error(err); 
+    } else { 
+      response.send(JSON.parse(JSON.stringify(results))); 
+    }
+  });
+});
+router.delete('/api/comment/delete', (req, res) => {
+  const commentCntSql = 'UPDATE posts SET comment_cnt = comment_cnt-1 where id = ?'
+  connection.query("DELETE FROM post_comment WHERE id = ?", [req.query.id], (err, data) => {
+    if (err) {
+      res.status(500);
+      res.render('error', { error: err });
+      res.send({ error : err });
+    } else {
+      connection.query(commentCntSql, [req.query.postId], (err, results, fields) => {
+        if (err) {
+          res.status(500);
+          res.render('error', { error: err });
+          res.send({ error : err });
+          throw new Error(err); 
+        } else { 
+          // response.send(JSON.parse(JSON.stringify(results))); 
+        }
+      });    
+      res.send({ result : data });
+    }
+ 
+  })
+})
 
 
 router.delete('/api/posts/delete', (req, res) => {

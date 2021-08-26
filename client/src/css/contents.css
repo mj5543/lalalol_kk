@@ -1,0 +1,23 @@
+.top-line {
+  border-top: 1px solid #f0f0f0;
+  padding-top: 10px;
+}
+.draft-wrapper {
+  height: calc(100% - 20px);
+}
+.draft-editor {
+  height: calc(100% - 15px) !important;
+}
+.content-s {
+  flex: 1 1 auto;
+  padding: 0.75rem;
+}
+.box-shadow-01 {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+}
+.box-shadow-02 {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px !important;
+}
+.box-shadow-03 {
+  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px !important;
+}

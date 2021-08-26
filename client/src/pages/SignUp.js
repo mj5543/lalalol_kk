@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import GoogleLoginBtn from '../components/login/GoogleLoginBtn';
+import FaceBookLoginBtn from '../components/login/FaceBookLoginBtn.';
 import {isEmail, isLength} from 'validator';
 import {isEmpty} from 'lodash';
 import IpAddress from '../components/lib/ip/IpAddress';
@@ -197,7 +198,16 @@ const SignUp = (props) => {
 	const ButtonElements = () => {
 		let elements = null;
 		if(!isDisabled) {
-			elements = <GoogleLoginBtn onGoogleLogin={setContents} />;
+			elements = 
+			<div className="wp-100" style={{margin: '0 0 1.5rem 0', display: '-webkit-inline-box'}}>
+			<div className="d-inline-bolck" style={{width: '49%'}}>
+				<GoogleLoginBtn onGoogleLogin={setContents} />;
+			</div>
+			<div className="d-inline-bolck" style={{width: '49%'}}>
+				<FaceBookLoginBtn onFacebookLogin={setContents} />
+			</div>
+
+		</div>
 		}
 		return elements;
 	}
@@ -229,9 +239,12 @@ const SignUp = (props) => {
 						<div className="card">
 							<div className="card-body">
 								<div className="m-sm-4">
+									<div className="wp-100" style={{margin: '0 0 1.5rem 0', display: '-webkit-inline-box'}}>
+										<ButtonElements />
+									</div>
 									<form>
 										<div className="mb-1">
-											<label className="form-label">Name</label>
+											{/* <label className="form-label">Name</label>
 											<input className={'form-control form-control-lg' + (nameInvalid ? ' is-invalid' : '')}
 												type="text"
 												value={name}
@@ -239,35 +252,71 @@ const SignUp = (props) => {
 												placeholder="Enter your name"
 												disabled={isDisabled}
 												onChange={onDateChange}
-											/>
-											<div className="invalid-message">{nameMessage}</div>
+											/> */}
+											<label className="field field_v2 wp-100">
+												<input className={'field__input' + (nameInvalid ? ' is-invalid' : '')}
+													type="text"
+													value={name}
+													name="name"
+													placeholder="Enter your name"
+													disabled={isDisabled}
+													onChange={onDateChange}
+												/>
+												<span class="field__label-wrap">
+													<span class="field__label">Name</span>
+												</span>
+											</label>
+											<div className="invalid-message ml-10">{nameMessage}</div>
 										</div>
 										<div className="mb-1">
-											<label className="form-label">Email</label>
+											{/* <label className="form-label">Email</label>
 											<input className={'form-control form-control-lg' + (emailInvalid ? ' is-invalid' : '')}
 												type="email" 
 												value={email} 
 												name="email" 
 												placeholder="Enter your email"
 												onChange={onDateChange}
-											/>
-											<div className="invalid-message">{emailMessage}</div>
+											/> */}
+											<label className="field field_v2 wp-100">
+												<input className={'field__input' + (emailInvalid ? ' is-invalid' : '')}
+													type="email" 
+													value={email} 
+													name="email" 
+													placeholder="Enter your email"
+													onChange={onDateChange}
+												/>
+												<span class="field__label-wrap">
+													<span class="field__label">Email</span>
+												</span>
+											
+											</label>
+											<div className={'invalid-message ml-10'}>{emailMessage}</div>
 										</div>
 										<div className="mb-1">
-											<label className="form-label">Password</label>
+											{/* <label className="form-label">Password</label>
 											<input className={'form-control form-control-lg' + (passwordInvalid ? ' is-invalid' : '')}
 												type="password"
 												name="password"
 												placeholder="Enter password" 
 												value={password}
             						onChange={onDateChange}
+											/> */}
+											<label className="field field_v2 wp-100">
+											<input className={'field__input' + (passwordInvalid ? ' is-invalid' : '')}
+												type="password"
+												name="password"
+												placeholder="Enter password" 
+												value={password}
+            						onChange={onDateChange}
 											/>
-											<div className="invalid-message">{passwordMessage}</div>
+												<span class="field__label-wrap">
+													<span class="field__label">Password</span>
+												</span>
+											</label>
+											<div className="invalid-message ml-10">{passwordMessage}</div>
 										</div>
 										<div className="text-center mt-3">
-											{/* <a href="index.html" className="btn btn-lg btn-primary">Sign up</a> */}
-											<button type="button" className="btn btn-lg btn-primary" onClick={onSignUp}>Sign up</button>
-											<ButtonElements />
+											<button type="button" className="custom-btn btn-6 wp-100" onClick={onSignUp}>Sign up</button>
 										</div>
 									</form>
 								</div>

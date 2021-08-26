@@ -58,7 +58,7 @@ const Profile = (props) => {
                 <li className="mb-1"><span data-feather="map-pin" className="feather-sm me-1"></span> From <a href="#">Seoul</a></li>
               </ul>
             </div>
-            <hr className="my-0" />
+            {/* <hr className="my-0" />
             <div className="card-body">
               <h5 className="h6 card-title">Elsewhere</h5>
               <ul className="list-unstyled mb-0">
@@ -68,7 +68,7 @@ const Profile = (props) => {
                 <li className="mb-1"><a href="#">Instagram</a></li>
                 <li className="mb-1"><a href="#">LinkedIn</a></li>
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
               <ActivityContents history={props.history} />

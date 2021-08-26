@@ -143,7 +143,7 @@ const InputContents = (props) => {
     <main className="d-flex w-100">
 		<div className="container d-flex flex-column">
 			<div className="row vh-100">
-				<div className="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+				<div className="col-sm-10 col-md-8 col-lg-5 mx-auto d-table h-100">
 					<div className="d-table-cell align-middle">
 
 						<div className="text-center mt-4">
@@ -159,23 +159,53 @@ const InputContents = (props) => {
 									<div className="text-center">
 										{/* <img src="img/avatars/avatar.jpg" alt="Charles Hall" className="img-fluid rounded-circle" width="132" height="132" /> */}
 									</div>
+									<div className="wp-100" style={{margin: '0 0 1.5rem 0', display: '-webkit-inline-box'}}>
+										<div className="d-inline-bolck" style={{width: '49%'}}>
+											<GoogleLoginBtn onGoogleLogin={provideUserCheck} history={props.history} location={props.location} />
+										</div>
+										<div className="d-inline-bolck" style={{width: '49%'}}>
+											<FaceBookLoginBtn onFacebookLogin={provideUserCheck} history={props.history} location={props.location} />
+										</div>
+
+									</div>
 									<form>
 										<div className="mb-3">
-										{/* <InputWithLabel label="이메일" name="email" value={email} onChange={handleChange} placeholder="이메일"/> */}
-											<label className="form-label">Email</label>
+											<label class="field field_v2 wp-100">
+												<input class="field__input"
+													placeholder="Enter your email"
+													type="email" name="email"
+													value={email}
+													onChange={onInputChange}
+												/>
+												<span class="field__label-wrap">
+													<span class="field__label">Email</span>
+												</span>
+											</label>
+											{/* <label className="form-label">Email</label>
 											<input className="form-control form-control-lg" type="email" name="email"
 											value={email}
 											placeholder="Enter your email"
 											onChange={onInputChange}
-											/>
+											/> */}
 										</div>
 										<div className="mb-3">
-											<label className="form-label">Password</label>
+											<label class="field field_v2 wp-100">
+												<input class="field__input"
+													placeholder="Enter your password"
+													type="password" name="password"
+													value={password}
+													onChange={onInputChange}
+												/>
+												<span class="field__label-wrap">
+													<span class="field__label">Password</span>
+												</span>
+											</label>
+											{/* <label className="form-label">Password</label>
 											<input className="form-control form-control-lg" type="password" name="password"
-											value={password}
-											placeholder="Enter your password"
-											onChange={onInputChange}
-											/>
+												value={password}
+												placeholder="Enter your password"
+												onChange={onInputChange}
+											/> */}
 											{/* <small>
 												<a href="index.html">Forgot password?</a>
 											</small> */}
@@ -189,11 +219,10 @@ const InputContents = (props) => {
 											</label>
 										</div> */}
 										<div className="text-center mt-3">
-											<button type="button" className="btn btn-md" onClick={userEmailPassCheck}>
-												<div className="login-password-icon" style={{width: '60px', height: '60px'}}></div>
+											<button className="custom-btn btn-6 wp-100" onClick={userEmailPassCheck}>
+												<span>Login</span>
+												{/* <div className="login-password-icon" style={{width: '60px', height: '60px'}}></div> */}
 											</button>
-											<GoogleLoginBtn onGoogleLogin={provideUserCheck} history={props.history} location={props.location} />
-											<FaceBookLoginBtn onFacebookLogin={provideUserCheck} history={props.history} location={props.location} />
 										</div>
 									</form>
 								</div>

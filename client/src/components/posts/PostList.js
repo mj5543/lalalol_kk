@@ -84,7 +84,7 @@ class PostList extends Component {
         compact: false,
         grow: 8,
         cell: d => <Link to={{pathname:`${this.props.pathInfo.url}/detail`, search: `?id=${d.id}&groupType=${this.props.groupType}`, state: this.props.location.state}} className="nav-link text-dark">
-        <td>{d.subject}</td>
+        <td>{d.subject} {d.comment_cnt  !== 0 && (`(${d.comment_cnt})`)}</td>
       </Link>
       },
       {

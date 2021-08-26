@@ -23,15 +23,18 @@ img, svg {
   height: 20px;
 }
 .content-container {
-  width: '100%';
-  height: '100vh';
-  float: 'right';
+  width: 100%;
+  height: 100vh;
+  float: right;
   /* background-color: '#f1f1f1'; */
-  padding: '20px'
+  padding: 20px
 }
 .btn-fr {
   float: right !important;
   border-radius: 0.3em;
+}
+.btn-fl {
+  float: left !important;
 }
 .btn-br {
   border-radius: 0.3em;
@@ -54,8 +57,14 @@ img, svg {
 .ml-10 {
   margin-left: 10px;
 }
+.mt-10 {
+  margin-top: 10px;
+}
 .mt-20 {
   margin-top: 20px;
+}
+.mb-10 {
+  margin-bottom: 10px;
 }
 .card a:not(.btn) {
   /* color: inherit; */
@@ -79,4 +88,19 @@ img, svg {
   font-family: 'GothicL';
   font-size: 13px;
   line-height: 14px;
+}
+.inblock {
+  display: inline-block;
+}
+.wp-100 {
+  width: 100% !important;
+}
+.hp-100 {
+  height: 100% !important;
+}
+.vh-100 {
+  height: 100vh !important;
+}
+.none {
+  display: none !important;
 }
