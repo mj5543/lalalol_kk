@@ -8,6 +8,7 @@ import "./css/base.css";
 import "./css/buttons.css";
 import "./css/contents.css";
 import "./css/inputs.css";
+import "./css/background.css";
 import NavbarExpandTop from './components/navs/NavbarExpandTop';
 import { Route, useLocation } from 'react-router-dom';
 import { Switch } from 'react-router-dom/cjs/react-router-dom.min';

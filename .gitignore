@@ -18,6 +18,7 @@
 /client/src/components
 /client/src/components/*.css
 /client/src/font
+/client/src/css
 # /client/build
 # /db.js
 /client/public/upload

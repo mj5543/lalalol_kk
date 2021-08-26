@@ -31,12 +31,7 @@ class DraftEditor extends Component {
       editContent: '',
       tempFileType: '',
       tempImageUrl: '',
-      fileConfig: {
-        bucketName: process.env.REACT_APP_S3_BUCKET_NAME,
-        region: process.env.REACT_APP_AWS_REGION,
-        accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-      }
+      fileConfig: {}
     };
     this.handleChange = this.handleChange.bind(this);
     // this.uploadImageCallBack = this.uploadImageCallBack(this);
@@ -45,6 +40,15 @@ class DraftEditor extends Component {
     this.calcState(this.props.editContent);
     if (process.env.NODE_ENV === "production") {
       this._getConfig();
+    } else {
+      this.setState({
+        fileConfig: {
+          bucketName: process.env.REACT_APP_S3_BUCKET_NAME,
+          region: process.env.REACT_APP_AWS_REGION,
+          accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+        }
+      })
     }
   }
   componentDidUpdate(prevProps, prevState) {
