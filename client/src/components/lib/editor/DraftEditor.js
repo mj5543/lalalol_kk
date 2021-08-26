@@ -108,7 +108,7 @@ class DraftEditor extends Component {
   _getConfig = async() => {
     const res = await axios.get(`/api/fileconfig`);
     this.setState({
-      fileConfig: res
+      fileConfig: res.data
     }) 
 }
   _getData = async() => {
