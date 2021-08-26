@@ -31,7 +31,7 @@ const GoogleLoginBtn = ({ location, history, onGoogleLogin }) =>{
               //   <div className="google-icon" style={{width: '30px', height: '30px'}}></div>
               // </button>
               <button class="custom-btn btn-17" style={{width: '100%'}} onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                <span className="wp-100">Click!</span>
+                <span className="wp-100">connection google account</span>
                 <span className="wp-100">
                   <div className="google-icon ml-10 btn-fl" style={{width: '30px', height: '30px', marginTop: '5px'}} />
                   <div className="d-inline-block">Google</div>
