@@ -32,7 +32,6 @@ app.use(adminRouter);
 app.get('*', (req, res)=> {
   res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
-
 const PORT = process.env.PORT || 5000;
 // console.log('process.env.NODE_ENV---', process.env.NODE_ENV);
 // console.log('process.env---', process.env);
